@@ -1,22 +1,43 @@
-import { AppHeader } from '@components/app-header/app-header';
-import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
-import { ingredients } from '@utils/ingredients';
+import { useIngredient } from '@/hooks/useIngredients';
+import { useWindowSize } from '@/hooks/useWindowSize';
+import { inCart } from '@/utils/inCart';
+import { useEffect } from 'react';
+
+import { CartProvider } from '../contexts/cart/cart-provider';
+import { Error } from '../error/error';
+import { DesktopLayout } from '../layouts/desktop/desktop';
+import { MobileLayout } from '../layouts/mobile/mobile';
+import { Loader } from '../loader/loader';
+import { Modal } from '../modal-window/modal/modal';
 
 import styles from './app.module.css';
 
 export const App = (): React.JSX.Element => {
+  const { ingredients, loading, error, getIngredients } = useIngredient();
+  const { screenType } = useWindowSize();
+
+  useEffect(() => {
+    getIngredients().catch((err) => {
+      console.error('Ошибка:', err);
+    });
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <Error text="Ошибка получения данных" />;
+  }
+
   return (
-    <div className={styles.app}>
-      <AppHeader />
-      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
-        Соберите бургер
-      </h1>
-      <main className={`${styles.main} pl-5 pr-5`}>
-        <BurgerIngredients ingredients={ingredients} />
-        <BurgerConstructor ingredients={ingredients} />
-      </main>
-    </div>
+    <CartProvider newCart={inCart} ingredients={ingredients}>
+      <div className={styles.app}>
+        {screenType === 'mobile' && <MobileLayout />}
+        {screenType === 'desktop' && <DesktopLayout />}
+        <Modal />
+      </div>
+    </CartProvider>
   );
 };
 
