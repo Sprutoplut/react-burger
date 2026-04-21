@@ -1,0 +1,11 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 16px;
+  margin: 0;
+  padding-inline-start: 0;
+  overflow: hidden auto;
+  list-style-type: none;
+}

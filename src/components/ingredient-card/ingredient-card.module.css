@@ -1,0 +1,10 @@
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.price p {
+  margin: 0;
+}

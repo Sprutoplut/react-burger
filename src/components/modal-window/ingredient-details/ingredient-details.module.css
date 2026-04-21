@@ -1,0 +1,40 @@
+.details {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  width: 520px;
+}
+
+.details img {
+  width: 480px;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+@media (width <= 1261px) {
+  .content {
+    padding-right: 62px;
+    padding-left: 62px;
+  }
+
+  .content h1 {
+    height: 90px;
+    color: #4c4cff;
+    text-shadow:
+      0 0 8px rgb(51 51 255 / 50%),
+      0 0 16px rgb(51 51 255 / 30%),
+      0 0 24px rgb(51 51 255 / 20%);
+  }
+
+  .info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 16px;
+  }
+}

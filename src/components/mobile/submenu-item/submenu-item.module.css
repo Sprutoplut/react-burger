@@ -1,0 +1,39 @@
+.dropdown_menu {
+  display: flex;
+  gap: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.menu_item {
+  position: relative;
+}
+
+.menu_button {
+  padding: 10px 15px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  min-width: 120px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+}
+
+.submenu_item {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.submenu_item:hover {
+  background: #f5f5f5;
+}
