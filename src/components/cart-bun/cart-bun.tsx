@@ -4,7 +4,7 @@ import type { TIngredient } from '@/utils/types';
 
 import styles from './cart-bun.module.css';
 
-type TCartBun = {
+export type TCartBun = {
   ingredient: TIngredient | undefined;
   direction: 'top' | 'bottom' | undefined;
 };

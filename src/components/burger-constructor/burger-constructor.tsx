@@ -19,7 +19,6 @@ export const BurgerConstructor = ({
 }: TBurgerConstructor): React.JSX.Element => {
   const { cart, openModal } = useCart();
   const { screenType } = useWindowSize();
-
   const { bun, main, total } = useMemo(() => {
     const firstBun = cart.find((item) => item.type === 'bun');
     const tmain = cart.filter((item) => item.type !== 'bun');

@@ -1,4 +1,5 @@
 import { useCart } from '@/hooks/useCart.ts';
+import { useHover } from '@/hooks/useHover';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { CloseIcon } from '@krgaa/react-developer-burger-ui-components';
 import { useEffect, useRef, useState } from 'react';
@@ -13,6 +14,7 @@ import styles from './modal.module.css';
 export const Modal = (): React.JSX.Element | null => {
   const [isPortalReady, setIsPortalReady] = useState(false);
   const { isOpen, closeModal, detailIng } = useCart();
+  const { type, onMouseEnter, onMouseLeave } = useHover();
   const modalRoot = useRef<HTMLDivElement | null>(null);
   const { screenType } = useWindowSize();
 
@@ -44,6 +46,7 @@ export const Modal = (): React.JSX.Element | null => {
 
     return (): void => {
       document.removeEventListener('keydown', handleKeyDown);
+      onMouseLeave();
     };
   }, [isOpen, isPortalReady, closeModal]);
 
@@ -58,11 +61,13 @@ export const Modal = (): React.JSX.Element | null => {
             {detailIng !== null && screenType !== 'mobile' && 'Детали ингредиента'}
             {detailIng === null && screenType === 'mobile' && 'Заказ оформлен'}
           </h1>
-          <CloseIcon
+          <div
             className={styles.closeButton}
-            type="primary"
-            onClick={closeModal}
-          />
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+          >
+            <CloseIcon type={type} onClick={closeModal} />
+          </div>
         </div>
         {detailIng !== null ? (
           <IngredientDetails ingredient={detailIng} />
