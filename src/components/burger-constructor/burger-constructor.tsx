@@ -1,4 +1,5 @@
 import { useCart } from '@/hooks/useCart';
+import { useModal } from '@/hooks/useModal';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { Button, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo } from 'react';
@@ -7,6 +8,7 @@ import { BetweenBun } from '../between-bun/between-bun';
 import { CartBun } from '../cart-bun/cart-bun';
 import { ListConstructor } from '../mobile/list-constructor/list-constructor';
 import { MobileHead } from '../mobile/mobile-head/mobile-head';
+import { OrderDetails } from '../modal-window/order-details/order-details';
 
 import styles from './burger-constructor.module.css';
 
@@ -17,7 +19,8 @@ type TBurgerConstructor = {
 export const BurgerConstructor = ({
   onClose,
 }: TBurgerConstructor): React.JSX.Element => {
-  const { cart, openModal } = useCart();
+  const { cart } = useCart();
+  const { openModal } = useModal();
   const { screenType } = useWindowSize();
   const { bun, main, total } = useMemo(() => {
     const firstBun = cart.find((item) => item.type === 'bun');
@@ -59,7 +62,7 @@ export const BurgerConstructor = ({
               <CurrencyIcon type="primary" />
             </div>
             <Button
-              onClick={() => openModal(null, 123)}
+              onClick={() => openModal(<OrderDetails orderNum={123} />, '')}
               size="large"
               type="primary"
               htmlType={'button'}

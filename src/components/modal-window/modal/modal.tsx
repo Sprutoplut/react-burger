@@ -1,22 +1,28 @@
-import { useCart } from '@/hooks/useCart.ts';
 import { useHover } from '@/hooks/useHover';
-import { useWindowSize } from '@/hooks/useWindowSize';
 import { CloseIcon } from '@krgaa/react-developer-burger-ui-components';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
-import { IngredientDetails } from '../ingredient-details/ingredient-details';
 import { ModalOverlay } from '../modal-overlay/modal-overlay';
-import { OrderDetails } from '../order-details/order-details';
 
 import styles from './modal.module.css';
 
-export const Modal = (): React.JSX.Element | null => {
+type TModal = {
+  title: string;
+  isOpen: boolean;
+  closeModal: () => void;
+  children: ReactNode;
+};
+
+export const Modal = ({
+  title,
+  closeModal,
+  children,
+  isOpen,
+}: TModal): React.JSX.Element | null => {
   const [isPortalReady, setIsPortalReady] = useState(false);
-  const { isOpen, closeModal, detailIng } = useCart();
   const { type, onMouseEnter, onMouseLeave } = useHover();
   const modalRoot = useRef<HTMLDivElement | null>(null);
-  const { screenType } = useWindowSize();
 
   useEffect(() => {
     const div = document.createElement('div');
@@ -57,10 +63,7 @@ export const Modal = (): React.JSX.Element | null => {
       <ModalOverlay onClick={closeModal} />
       <div className={`${styles.modal} p-10`}>
         <div className={styles.modal_header}>
-          <h1 className="text text_type_main-large">
-            {detailIng !== null && screenType !== 'mobile' && 'Детали ингредиента'}
-            {detailIng === null && screenType === 'mobile' && 'Заказ оформлен'}
-          </h1>
+          <h1 className="text text_type_main-large">{title}</h1>
           <div
             className={styles.closeButton}
             onMouseEnter={onMouseEnter}
@@ -69,11 +72,7 @@ export const Modal = (): React.JSX.Element | null => {
             <CloseIcon type={type} onClick={closeModal} />
           </div>
         </div>
-        {detailIng !== null ? (
-          <IngredientDetails ingredient={detailIng} />
-        ) : (
-          <OrderDetails />
-        )}
+        {children}
       </div>
     </>,
     modalRoot.current!

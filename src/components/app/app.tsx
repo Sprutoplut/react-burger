@@ -4,12 +4,12 @@ import { inCart } from '@/utils/inCart';
 import { useEffect } from 'react';
 
 import { CartProvider } from '../contexts/cart/cart-provider';
+import { ModalProvider } from '../contexts/modal/modal-provider';
 import ErrorBoundary from '../error-boundary/error-boundary';
 import { Error } from '../error/error';
 import { DesktopLayout } from '../layouts/desktop/desktop';
 import { MobileLayout } from '../layouts/mobile/mobile';
 import { Loader } from '../loader/loader';
-import { Modal } from '../modal-window/modal/modal';
 
 import styles from './app.module.css';
 
@@ -35,9 +35,10 @@ export const App = (): React.JSX.Element => {
     <CartProvider newCart={inCart} ingredients={ingredients}>
       <div className={styles.app}>
         <ErrorBoundary>
-          {screenType === 'mobile' && <MobileLayout />}
-          {screenType === 'desktop' && <DesktopLayout />}
-          <Modal />
+          <ModalProvider>
+            {screenType === 'mobile' && <MobileLayout />}
+            {screenType === 'desktop' && <DesktopLayout />}
+          </ModalProvider>
         </ErrorBoundary>
       </div>
     </CartProvider>

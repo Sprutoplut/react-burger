@@ -18,7 +18,7 @@ export const IngredientList = ({
   type_ingredient,
   cart,
 }: TIngredientList): React.JSX.Element => {
-  const { ingredients, addToCart, openModal } = useCart();
+  const { ingredients, addToCart } = useCart();
 
   const { screenType } = useWindowSize();
   return (
@@ -36,7 +36,6 @@ export const IngredientList = ({
               <IngredientCard
                 ingredient={ingredient}
                 count={cart[ingredient._id] || 0}
-                openModal={openModal}
               ></IngredientCard>
               {screenType === 'mobile' && (
                 <Button

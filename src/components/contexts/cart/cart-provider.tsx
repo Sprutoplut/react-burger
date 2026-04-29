@@ -16,9 +16,6 @@ export const CartProvider = ({
   newCart,
 }: TCartProvider): React.JSX.Element => {
   const [cart, setCart] = useState<TIngredient[]>(newCart);
-  const [isOpen, setIsOpen] = useState(false);
-  const [detailIng, setDetailIng] = useState<TIngredient | null>(null);
-  const [orderNum, setOrderNum] = useState<number | null>(null);
 
   const addToCart = useCallback(
     (id: string) => {
@@ -42,33 +39,12 @@ export const CartProvider = ({
     },
     [ingredients]
   );
-
-  const openModal = useCallback(
-    (ingredient: TIngredient | null, orderNum: number | null) => {
-      setDetailIng(ingredient);
-      setOrderNum(orderNum);
-      setIsOpen(true);
-    },
-    []
-  );
-
-  const closeModal = useCallback(() => {
-    setIsOpen(false);
-    setOrderNum(null);
-    setDetailIng(null);
-  }, []);
-
   return (
     <CartContext.Provider
       value={{
         cart,
         ingredients,
-        detailIng,
-        orderNum,
-        isOpen,
         addToCart,
-        openModal,
-        closeModal,
       }}
     >
       {children}

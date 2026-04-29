@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  gap: 16px;
+  gap: 0;
   margin: 0;
   padding-inline-start: 0;
   overflow: hidden auto;

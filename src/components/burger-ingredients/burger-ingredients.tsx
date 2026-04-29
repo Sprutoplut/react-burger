@@ -64,10 +64,7 @@ export const BurgerIngredients = (): React.JSX.Element => {
             id={`card_block_${type_ing.type}`}
             className={styles.parent_ingredient_list}
           >
-            <IngredientList
-              type_ingredient={type_ing}
-              cart={cartQuantities}
-            ></IngredientList>
+            <IngredientList type_ingredient={type_ing} cart={cartQuantities} />
           </li>
         ))}
       </ul>

@@ -15,7 +15,7 @@ export const CartBun = ({ ingredient, direction }: TCartBun): React.JSX.Element 
       <ConstructorElement
         isLocked
         price={ingredient!.price}
-        text={ingredient!.name}
+        text={ingredient!.name + ' (' + (direction === 'top' ? 'верх' : 'низ') + ')'}
         thumbnail={ingredient!.image_mobile}
         type={direction}
       />

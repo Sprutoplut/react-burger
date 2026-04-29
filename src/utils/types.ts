@@ -18,12 +18,13 @@ export type TIngredient = {
 export type TCartContext = {
   cart: TIngredient[];
   ingredients: TIngredient[];
-  detailIng: TIngredient | null;
-  orderNum: number | null;
-  isOpen: boolean;
   addToCart: (id: string) => void;
-  openModal: (ingredient: TIngredient | null, orderNum: number | null) => void;
+};
+
+export type TModalContext = {
+  openModal: (content: React.ReactNode, title: string) => void;
   closeModal: () => void;
+  isModalOpen: boolean;
 };
 
 export type TValueMenuItems = {
