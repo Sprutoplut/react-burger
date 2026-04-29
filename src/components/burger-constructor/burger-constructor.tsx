@@ -1,5 +1,4 @@
 import { useCart } from '@/hooks/useCart';
-import { useModal } from '@/hooks/useModal';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { Button, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo } from 'react';
@@ -19,8 +18,7 @@ type TBurgerConstructor = {
 export const BurgerConstructor = ({
   onClose,
 }: TBurgerConstructor): React.JSX.Element => {
-  const { cart } = useCart();
-  const { openModal } = useModal();
+  const { cart, openModal } = useCart();
   const { screenType } = useWindowSize();
   const { bun, main, total } = useMemo(() => {
     const firstBun = cart.find((item) => item.type === 'bun');

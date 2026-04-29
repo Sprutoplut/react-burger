@@ -4,8 +4,6 @@ import { inCart } from '@/utils/inCart';
 import { useEffect } from 'react';
 
 import { CartProvider } from '../contexts/cart/cart-provider';
-import { ModalProvider } from '../contexts/modal/modal-provider';
-import ErrorBoundary from '../error-boundary/error-boundary';
 import { Error } from '../error/error';
 import { DesktopLayout } from '../layouts/desktop/desktop';
 import { MobileLayout } from '../layouts/mobile/mobile';
@@ -32,16 +30,12 @@ export const App = (): React.JSX.Element => {
   }
 
   return (
-    <CartProvider newCart={inCart} ingredients={ingredients}>
-      <div className={styles.app}>
-        <ErrorBoundary>
-          <ModalProvider>
-            {screenType === 'mobile' && <MobileLayout />}
-            {screenType === 'desktop' && <DesktopLayout />}
-          </ModalProvider>
-        </ErrorBoundary>
-      </div>
-    </CartProvider>
+    <div className={styles.app}>
+      <CartProvider newCart={inCart} ingredients={ingredients}>
+        {screenType === 'mobile' && <MobileLayout />}
+        {screenType === 'desktop' && <DesktopLayout />}
+      </CartProvider>
+    </div>
   );
 };
 

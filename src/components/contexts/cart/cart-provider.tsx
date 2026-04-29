@@ -1,4 +1,6 @@
-import { useState, useCallback } from 'react';
+import ErrorBoundary from '@/components/error-boundary/error-boundary';
+import { Modal } from '@/components/modal-window/modal/modal';
+import { useState, useCallback, type ReactNode } from 'react';
 
 import { CartContext } from './cart';
 
@@ -16,6 +18,21 @@ export const CartProvider = ({
   newCart,
 }: TCartProvider): React.JSX.Element => {
   const [cart, setCart] = useState<TIngredient[]>(newCart);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+  const [modalTitle, setModalTitle] = useState('');
+
+  const openModal = (content: ReactNode, title: string): void => {
+    setModalContent(content);
+    setModalTitle(title);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = (): void => {
+    setIsModalOpen(false);
+    setModalContent(null);
+    setModalTitle('');
+  };
 
   const addToCart = useCallback(
     (id: string) => {
@@ -45,9 +62,17 @@ export const CartProvider = ({
         cart,
         ingredients,
         addToCart,
+        openModal,
+        closeModal,
+        isModalOpen,
       }}
     >
-      {children}
+      <ErrorBoundary>
+        {children}
+        <Modal isOpen={isModalOpen} closeModal={closeModal} title={modalTitle}>
+          {modalContent}
+        </Modal>
+      </ErrorBoundary>
     </CartContext.Provider>
   );
 };

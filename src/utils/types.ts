@@ -19,9 +19,6 @@ export type TCartContext = {
   cart: TIngredient[];
   ingredients: TIngredient[];
   addToCart: (id: string) => void;
-};
-
-export type TModalContext = {
   openModal: (content: React.ReactNode, title: string) => void;
   closeModal: () => void;
   isModalOpen: boolean;

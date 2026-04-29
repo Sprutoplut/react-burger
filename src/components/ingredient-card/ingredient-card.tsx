@@ -1,5 +1,5 @@
+import { useCart } from '@/hooks/useCart';
 import { useHover } from '@/hooks/useHover';
-import { useModal } from '@/hooks/useModal';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 
@@ -19,7 +19,7 @@ export const IngredientCard = ({
   count,
 }: TIngredientCard): React.JSX.Element => {
   const { type, onMouseEnter, onMouseLeave } = useHover();
-  const { openModal } = useModal();
+  const { openModal } = useCart();
   const { screenType } = useWindowSize();
   return (
     <div

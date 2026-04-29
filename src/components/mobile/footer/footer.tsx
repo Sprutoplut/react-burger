@@ -1,6 +1,5 @@
 import { OrderDetails } from '@/components/modal-window/order-details/order-details';
 import { useCart } from '@/hooks/useCart';
-import { useModal } from '@/hooks/useModal';
 import { Button, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo } from 'react';
 
@@ -12,8 +11,7 @@ type TFooter = {
 };
 
 export const Footer = ({ onClick, active }: TFooter): React.JSX.Element => {
-  const { cart } = useCart();
-  const { openModal } = useModal();
+  const { cart, openModal } = useCart();
   const total = useMemo(() => {
     const ttotal = cart.reduce((sum, item) => {
       const multiplier = item.type === 'bun' ? 2 : 1;
