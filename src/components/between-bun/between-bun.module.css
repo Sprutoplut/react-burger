@@ -1,0 +1,4 @@
+.drag {
+  position: absolute;
+  transform: translateX(calc(-100% - 8px));
+}

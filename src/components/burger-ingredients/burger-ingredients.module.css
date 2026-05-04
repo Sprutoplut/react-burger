@@ -6,10 +6,50 @@
   font-family: 'Jet Brains Mono', serif;
 }
 
-.menu {
+.menu,
+.type_list {
   display: flex;
   margin: 0;
-  padding: 0;
   text-align: center;
   list-style-type: none;
+}
+
+.menu {
+  padding-left: 0;
+}
+
+.type_list {
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding: 0;
+  overflow: hidden auto;
+  text-align: left;
+}
+
+.parent_ingredient_list {
+  width: 100%;
+}
+
+@media (width <= 1261px) {
+  .burger_ingredients {
+    max-width: unset;
+    overflow: hidden auto;
+  }
+
+  .menu {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .menu div {
+    flex: 1;
+    min-width: unset;
+    padding: 16px 32px;
+  }
+
+  .type_list {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
 }

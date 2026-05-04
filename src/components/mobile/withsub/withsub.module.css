@@ -1,0 +1,20 @@
+.withsub_ico {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 8px;
+}
+
+.withsub {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.sub_container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

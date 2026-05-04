@@ -1,0 +1,47 @@
+.ingredient_list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: center;
+  gap: 32px 24px;
+  margin: 0;
+  text-align: center;
+  list-style-type: none;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 208px;
+  margin: 0;
+  list-style-type: none;
+}
+
+.card img {
+  width: 240px;
+  object-fit: cover;
+  transition: 0.2s;
+}
+
+.card img:hover {
+  cursor: pointer;
+  scale: calc(1.2);
+}
+
+@media (width <= 768px) {
+  .ingredient_list {
+    gap: 24px 16px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .card img {
+    width: 144px;
+  }
+
+  .card {
+    justify-content: space-between;
+    height: unset;
+  }
+}
