@@ -1,10 +1,10 @@
-import { useCart } from '@/hooks/useCart';
 import { useHover } from '@/hooks/useHover';
 import { useWindowSize } from '@/hooks/useWindowSize';
+import { openModal } from '@/store/slices/modalSlice';
 import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
+import { useDispatch } from 'react-redux';
 
-import { IngredientDetails } from '../modal-window/ingredient-details/ingredient-details';
-
+import type { AppDispatch } from '@/store';
 import type { TIngredient } from '@/utils/types';
 
 import styles from './ingredient-card.module.css';
@@ -19,21 +19,24 @@ export const IngredientCard = ({
   count,
 }: TIngredientCard): React.JSX.Element => {
   const { type, onMouseEnter, onMouseLeave } = useHover();
-  const { openModal } = useCart();
   const { screenType } = useWindowSize();
+  const dispatch = useDispatch<AppDispatch>();
+  const handleOpenModal = (): void => {
+    dispatch(
+      openModal({
+        ingredient: ingredient,
+        title: screenType === 'desktop' ? 'Детали ингредиента' : '',
+      })
+    );
+  };
   return (
     <div
       className={styles.card_container}
-      onClick={() =>
-        openModal(
-          <IngredientDetails ingredient={ingredient} />,
-          screenType === 'desktop' ? 'Детали ингредиента' : ''
-        )
-      }
+      onClick={handleOpenModal}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <Counter count={count} size="default" />
+      {count >= 1 && <Counter count={count} size="default" />}
       <img src={ingredient.image} alt={ingredient.name} draggable="false" />
       <div className={`${styles.price} pb-1 pt-1`}>
         <p className="text_type_digits-default">{ingredient.price}</p>

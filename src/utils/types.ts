@@ -15,13 +15,13 @@ export type TIngredient = {
   __v: number;
 };
 
-export type TCartContext = {
-  cart: TIngredient[];
-  ingredients: TIngredient[];
-  addToCart: (id: string) => void;
-  openModal: (content: React.ReactNode, title: string) => void;
-  closeModal: () => void;
-  isModalOpen: boolean;
+export type TIngredientNanoid = TIngredient & {
+  nanoid: string;
+};
+
+export type TCart = {
+  bun: TIngredient | null;
+  main: TIngredientNanoid[];
 };
 
 export type TValueMenuItems = {
@@ -39,3 +39,19 @@ export type TValueSubMenuItems = {
 export type Ttype_ingredients = (typeof type_ingredients)[number];
 
 export type TIconTypes = 'secondary' | 'primary' | 'error' | 'success' | 'disabled';
+
+type TDataItem = unknown;
+
+export type TGenericState<T = TDataItem> = {
+  data: T[];
+  loading: boolean;
+  error: string | null;
+};
+
+export type OrderResponse = {
+  order: {
+    number: number;
+  };
+  success: boolean;
+  name: string;
+};

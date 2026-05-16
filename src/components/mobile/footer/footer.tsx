@@ -1,7 +1,12 @@
-import { OrderDetails } from '@/components/modal-window/order-details/order-details';
+import { Loader } from '@/components/loader/loader';
 import { useCart } from '@/hooks/useCart';
+import { openModal } from '@/store/slices/modalSlice';
 import { Button, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
-import { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { Error } from '../../error/error';
+
+import type { AppDispatch } from '@/store';
 
 import styles from './footer.module.css';
 
@@ -11,28 +16,46 @@ type TFooter = {
 };
 
 export const Footer = ({ onClick, active }: TFooter): React.JSX.Element => {
-  const { cart, openModal } = useCart();
-  const total = useMemo(() => {
-    const ttotal = cart.reduce((sum, item) => {
-      const multiplier = item.type === 'bun' ? 2 : 1;
-      return sum + item.price * multiplier;
-    }, 0);
-    return ttotal;
-  }, [cart]);
-  const handleClick = (): void => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { total, getOrderNumber, isLoading, error } = useCart();
+  const handleOpenModal = async (): Promise<void> => {
     if (!active) {
       onClick();
     } else {
-      openModal(<OrderDetails orderNum={123} />, 'Заказ оформлен');
+      const orderNumber = await getOrderNumber();
+
+      if (orderNumber !== null) {
+        dispatch(
+          openModal({
+            orderNum: orderNumber,
+            title: 'Заказ оформлен',
+          })
+        );
+      }
     }
   };
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <Error text="Ошибка получения данных" />;
+  }
+
   return (
     <footer className={`${styles.footer} pr-2 pl-2 pb-4 pt-4`}>
       <div className={styles.price_total_number}>
         <p className="text_type_digits-default">{total}</p>
         <CurrencyIcon type="primary" />
       </div>
-      <Button onClick={handleClick} size="medium" type="primary" htmlType={'button'}>
+      <Button
+        onClick={() => {
+          void handleOpenModal();
+        }}
+        size="medium"
+        type="primary"
+        htmlType={'button'}
+      >
         {active ? 'Оформить заказ' : 'Смотреть заказ'}
       </Button>
     </footer>

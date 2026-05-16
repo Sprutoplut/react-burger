@@ -1,13 +1,20 @@
 import { useCart } from '@/hooks/useCart';
+import { useDragState } from '@/hooks/useDrag';
 import { useWindowSize } from '@/hooks/useWindowSize';
-import { Button, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
-import { useMemo } from 'react';
+import { addToCart } from '@/store/slices/cartSlice';
+import { openModal } from '@/store/slices/modalSlice';
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { BetweenBun } from '../between-bun/between-bun';
-import { CartBun } from '../cart-bun/cart-bun';
-import { ListConstructor } from '../mobile/list-constructor/list-constructor';
-import { MobileHead } from '../mobile/mobile-head/mobile-head';
-import { OrderDetails } from '../modal-window/order-details/order-details';
+import { BetweenBunLayer } from '../drag-style/between-bun';
+import { ListItemLayer } from '../drag-style/list-item';
+import { Error } from '../error/error';
+import { Loader } from '../loader/loader';
+import { DesktopBurgerConstructor } from './burger-constructor-desktop';
+import { MobileBurgerConstructor } from './burger-constructor-mobile';
+
+import type { AppDispatch } from '@/store';
+import type { TIngredientNanoid } from '@/utils/types';
 
 import styles from './burger-constructor.module.css';
 
@@ -18,57 +25,62 @@ type TBurgerConstructor = {
 export const BurgerConstructor = ({
   onClose,
 }: TBurgerConstructor): React.JSX.Element => {
-  const { cart, openModal } = useCart();
+  const dispatch = useDispatch<AppDispatch>();
+  const { bun, main, total, getOrderNumber, isLoading, error } = useCart();
   const { screenType } = useWindowSize();
-  const { bun, main, total } = useMemo(() => {
-    const firstBun = cart.find((item) => item.type === 'bun');
-    const tmain = cart.filter((item) => item.type !== 'bun');
-    const ttotal = cart.reduce((sum, item) => {
-      const multiplier = item.type === 'bun' ? 2 : 1;
-      return sum + item.price * multiplier;
-    }, 0);
-    return { bun: firstBun, main: tmain, total: ttotal };
-  }, [cart]);
+  const { draggedIngredientId, handleDragStart, handleDragEnd } = useDragState();
+
+  const handleOpenModal = async (): Promise<void> => {
+    const orderNumber = await getOrderNumber();
+    if (orderNumber !== null) {
+      dispatch(
+        openModal({
+          orderNum: orderNumber,
+          title: '',
+        })
+      );
+    }
+  };
+
+  const handleDropIngredient = useCallback(
+    (item: TIngredientNanoid): void => {
+      if (item.type !== 'bun') {
+        dispatch(addToCart(item));
+      }
+    },
+    [dispatch]
+  );
+
+  if (isLoading) return <Loader />;
+  if (error) return <Error text="Ошибка получения данных" />;
 
   return (
     <section className={`${styles.burger_constructor} pl-4`}>
+      {screenType === 'desktop' ? <BetweenBunLayer /> : <ListItemLayer />}
       {screenType === 'mobile' && (
-        <>
-          <MobileHead title="Заказ" onClose={onClose as () => void} />
-          <ListConstructor bun={bun!} main={main} />
-        </>
+        <MobileBurgerConstructor
+          bun={bun!}
+          main={main}
+          onClose={onClose}
+          draggedIngredientId={draggedIngredientId}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDropIngredient={handleDropIngredient}
+        />
       )}
       {screenType === 'desktop' && (
-        <>
-          <ul className={`${styles.cart_list_main} pb-10`}>
-            <CartBun ingredient={bun} direction="top"></CartBun>
-            <ul className={`${styles.cart_list} pl-8 pr-2 `}>
-              {main.map((main, index) => (
-                <li
-                  key={`${main._id}-${index}`}
-                  className={`${styles.element_card_list} `}
-                >
-                  <BetweenBun ingredient={main}></BetweenBun>
-                </li>
-              ))}
-            </ul>
-            <CartBun ingredient={bun} direction="bottom"></CartBun>
-          </ul>
-          <div className={`${styles.price_total} pl-8 pr-4`}>
-            <div className={styles.price_total_number}>
-              <p className="text_type_digits-medium">{total}</p>
-              <CurrencyIcon type="primary" />
-            </div>
-            <Button
-              onClick={() => openModal(<OrderDetails orderNum={123} />, '')}
-              size="large"
-              type="primary"
-              htmlType={'button'}
-            >
-              Оформить заказ
-            </Button>
-          </div>
-        </>
+        <DesktopBurgerConstructor
+          bun={bun}
+          main={main}
+          total={total}
+          draggedIngredientId={draggedIngredientId}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onOpenModal={() => {
+            void handleOpenModal();
+          }}
+          onDropIngredient={handleDropIngredient}
+        />
       )}
     </section>
   );

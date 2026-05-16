@@ -10,15 +10,37 @@
 }
 
 .list_item {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: start;
   width: 100%;
   border-bottom: 1px rgb(47 47 55 / 100%) solid;
+  cursor: grab;
+  transition: all 0.3s ease;
+}
+
+.list_item:active {
+  cursor: grabbing;
+}
+
+.delete_button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 0;
+  overflow: hidden;
+  background: #e52b34;
+  cursor: pointer;
+  transition: width 0.3s ease;
 }
 
 .list_item img {
-  width: 100px;
+  width: 50px;
 }
 
 .list_drag {
@@ -32,4 +54,13 @@
   display: flex;
   justify-content: start;
   align-items: center;
+  gap: 12px;
+}
+
+.content_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  transition: transform 0.3s ease;
 }
