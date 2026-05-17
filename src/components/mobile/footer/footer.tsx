@@ -1,6 +1,6 @@
 import { Loader } from '@/components/loader/loader';
 import { useCart } from '@/hooks/useCart';
-import { useAppDispatch } from '@/hooks/useRedux';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { openModal } from '@/store/slices/modalSlice';
 import { Button, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 
@@ -14,6 +14,7 @@ type TFooter = {
 };
 
 export const Footer = ({ onClick, active }: TFooter): React.JSX.Element => {
+  const bun = useAppSelector((state) => state.cart.bun);
   const dispatch = useAppDispatch();
   const { total, getOrderNumber, isLoading, error } = useCart();
   const handleOpenModal = async (): Promise<void> => {
@@ -50,6 +51,7 @@ export const Footer = ({ onClick, active }: TFooter): React.JSX.Element => {
         onClick={() => {
           void handleOpenModal();
         }}
+        disabled={bun === null && active}
         size="medium"
         type="primary"
         htmlType={'button'}

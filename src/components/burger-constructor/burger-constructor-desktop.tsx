@@ -69,7 +69,13 @@ export const DesktopBurgerConstructor = ({
           <p className="text_type_digits-medium">{total}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button onClick={onOpenModal} size="large" type="primary" htmlType="button">
+        <Button
+          onClick={onOpenModal}
+          disabled={bun === null}
+          size="large"
+          type="primary"
+          htmlType="button"
+        >
           Оформить заказ
         </Button>
       </div>
