@@ -1,9 +1,8 @@
+import { useAppSelector } from '@/hooks/useRedux';
 import { useScroll } from '@/hooks/useScroll';
-import { selectCart } from '@/store/selectors/cartSelector';
 import { type_ingredients } from '@/utils/constants';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { IngredientList } from '../ingredient-list/ingredient-list';
 
@@ -12,7 +11,7 @@ import type { Ttype_ingredients } from '@utils/types';
 import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = (): React.JSX.Element => {
-  const cart = useSelector(selectCart);
+  const cart = useAppSelector((state) => state.cart);
   const [currentTab, setCurrentTab] = useState<Ttype_ingredients>(type_ingredients[0]);
   const [cartQuantities, setСartQuantities] = useState<Record<string, number>>({});
 

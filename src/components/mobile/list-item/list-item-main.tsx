@@ -1,3 +1,4 @@
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { findCartSelector } from '@/store/selectors/cartSelector';
 import { moveCart } from '@/store/slices/cartSlice';
 import {
@@ -8,7 +9,6 @@ import {
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { useDispatch, useSelector } from 'react-redux';
 import { useSwipeable } from 'react-swipeable';
 
 import type { TIngredientNanoid } from '@/utils/types';
@@ -42,12 +42,12 @@ export const ListItemMain = ({
   onSwipeClose,
   onDelete,
 }: TListItemMain): React.JSX.Element => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const dragRef = useRef<HTMLLIElement>(null);
   const [localSwipeOffset, setLocalSwipeOffset] = useState(0);
   const SWIPE_MAX_WIDTH = 100;
 
-  const ingredientIndex = useSelector(findCartSelector(ingredient.nanoid)).index;
+  const ingredientIndex = useAppSelector(findCartSelector(ingredient.nanoid)).index;
 
   useEffect(() => {
     if (isSwipeOpen) {

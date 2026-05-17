@@ -1,6 +1,6 @@
+import { useAppSelector } from '@/hooks/useRedux';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { selectIngredients } from '@/store/selectors/ingredientsSelectors';
-import { useSelector } from 'react-redux';
 import { Fragment } from 'react/jsx-runtime';
 
 import { IngredientListItem } from './ingredient-list-item';
@@ -18,7 +18,7 @@ export const IngredientList = ({
   type_ingredient,
   cart,
 }: TIngredientList): React.JSX.Element => {
-  const ingredients = useSelector(selectIngredients);
+  const ingredients = useAppSelector(selectIngredients);
 
   const { screenType } = useWindowSize();
   return (

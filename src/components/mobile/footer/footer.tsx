@@ -1,12 +1,10 @@
 import { Loader } from '@/components/loader/loader';
 import { useCart } from '@/hooks/useCart';
+import { useAppDispatch } from '@/hooks/useRedux';
 import { openModal } from '@/store/slices/modalSlice';
 import { Button, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
 
 import { Error } from '../../error/error';
-
-import type { AppDispatch } from '@/store';
 
 import styles from './footer.module.css';
 
@@ -16,7 +14,7 @@ type TFooter = {
 };
 
 export const Footer = ({ onClick, active }: TFooter): React.JSX.Element => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { total, getOrderNumber, isLoading, error } = useCart();
   const handleOpenModal = async (): Promise<void> => {
     if (!active) {

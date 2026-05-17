@@ -1,12 +1,11 @@
+import { useAppDispatch } from '@/hooks/useRedux';
 import { addToCart } from '@/store/slices/cartSlice';
 import { Button } from '@krgaa/react-developer-burger-ui-components';
 import { useRef } from 'react';
 import { useDrag } from 'react-dnd';
-import { useDispatch } from 'react-redux';
 
 import { IngredientCard } from '../ingredient-card/ingredient-card';
 
-import type { AppDispatch } from '@/store';
 import type { TIngredient } from '@/utils/types';
 
 import styles from './ingredient-list.module.css';
@@ -22,7 +21,7 @@ export const IngredientListItem = ({
   screenType,
   cart,
 }: TIngredientListItem): React.JSX.Element => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const ref = useRef<HTMLLIElement>(null);
   const [, drag] = useDrag({
     type: 'INGREDIENT',

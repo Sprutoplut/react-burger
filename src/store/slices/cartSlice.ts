@@ -7,6 +7,11 @@ const initialState: TCart = {
   main: [],
 };
 
+type AddToCartPayload = {
+  ingredient: TIngredient;
+  nanoid: string;
+};
+
 type MoveCardPayload = {
   id: string;
   to: number;
@@ -16,18 +21,32 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, action: PayloadAction<TIngredient>) => {
-      const product = action.payload;
-      if (!product) return;
+    addToCart: {
+      // Action creator с генерацией nanoid
+      prepare: (ingredient: TIngredient) => {
+        // Генерация ID происходит здесь, в action creator
+        const cnanoid = nanoid();
 
-      if (product.type === 'bun') state.bun = product;
-      else {
-        const productWithNanoid: TIngredientNanoid = {
-          ...product,
-          nanoid: nanoid(),
+        return {
+          payload: {
+            ingredient,
+            nanoid: cnanoid,
+          },
         };
-        state.main.push(productWithNanoid);
-      }
+      },
+      reducer: (state, action: PayloadAction<AddToCartPayload>) => {
+        const { ingredient, nanoid } = action.payload;
+
+        if (ingredient.type === 'bun') {
+          state.bun = ingredient;
+        } else {
+          const productWithNanoid: TIngredientNanoid = {
+            ...ingredient,
+            nanoid,
+          };
+          state.main.push(productWithNanoid);
+        }
+      },
     },
     removeFromCart: (state, action: PayloadAction<string>) => {
       const product = action.payload;

@@ -1,7 +1,7 @@
+import { useAppDispatch } from '@/hooks/useRedux';
 import { removeFromCart } from '@/store/slices/cartSlice';
 import { useRef, useState, useCallback } from 'react';
 import { useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
 
 import { ListItemBun } from '../list-item/list-item-bun';
 import { ListItemEmpty } from '../list-item/list-item-empty';
@@ -28,7 +28,7 @@ export const ListConstructor = ({
   onDragEnd,
   onDropIngredient,
 }: TListConstructor): React.JSX.Element => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const dropRef = useRef<HTMLUListElement>(null);
 
   const [openSwipeId, setOpenSwipeId] = useState<string | null>(null);

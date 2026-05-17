@@ -1,9 +1,9 @@
+import { useAppDispatch } from '@/hooks/useRedux';
 import { removeFromCart } from '@/store/slices/cartSlice';
 import {
   ConstructorElement,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
 import { Fragment } from 'react/jsx-runtime';
 
 import type { TIngredientNanoid } from '@/utils/types';
@@ -15,7 +15,7 @@ type TBetweenBun = {
 };
 
 export const BetweenBun = ({ ingredient }: TBetweenBun): React.JSX.Element => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleRemove = (): void => {
     if (ingredient?.nanoid) {

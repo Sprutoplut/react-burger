@@ -1,7 +1,7 @@
 import { useCreateOrderMutation } from '@/store/api/orderApi';
-import { selectBun, selectMain } from '@/store/selectors/cartSelector';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+
+import { useAppSelector } from './useRedux';
 
 import type { TIngredient, TIngredientNanoid } from '@/utils/types';
 
@@ -16,8 +16,8 @@ type BurgerConstructorData = {
 
 export const useCart = (): BurgerConstructorData => {
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
-  const bun = useSelector(selectBun);
-  const main = useSelector(selectMain);
+  const bun = useAppSelector((state) => state.cart.bun);
+  const main = useAppSelector((state) => state.cart.main);
   const total = useMemo(() => {
     let sum = 0;
     if (bun) sum += bun.price * 2;

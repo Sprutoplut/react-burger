@@ -1,10 +1,10 @@
 import { useCart } from '@/hooks/useCart';
 import { useDragState } from '@/hooks/useDrag';
+import { useAppDispatch } from '@/hooks/useRedux';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { addToCart } from '@/store/slices/cartSlice';
 import { openModal } from '@/store/slices/modalSlice';
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 
 import { BetweenBunLayer } from '../drag-style/between-bun';
 import { ListItemLayer } from '../drag-style/list-item';
@@ -13,7 +13,6 @@ import { Loader } from '../loader/loader';
 import { DesktopBurgerConstructor } from './burger-constructor-desktop';
 import { MobileBurgerConstructor } from './burger-constructor-mobile';
 
-import type { AppDispatch } from '@/store';
 import type { TIngredientNanoid } from '@/utils/types';
 
 import styles from './burger-constructor.module.css';
@@ -25,7 +24,7 @@ type TBurgerConstructor = {
 export const BurgerConstructor = ({
   onClose,
 }: TBurgerConstructor): React.JSX.Element => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { bun, main, total, getOrderNumber, isLoading, error } = useCart();
   const { screenType } = useWindowSize();
   const { draggedIngredientId, handleDragStart, handleDragEnd } = useDragState();

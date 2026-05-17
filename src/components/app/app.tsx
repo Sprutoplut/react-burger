@@ -1,9 +1,9 @@
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { useGetIngredientsQuery } from '@/store/api/ingredientsApi';
 import { closeModal } from '@/store/slices/modalSlice';
 import { HTML5toTouch } from 'rdndmb-html5-to-touch';
 import { DndProvider } from 'react-dnd-multi-backend';
-import { useDispatch, useSelector } from 'react-redux';
 
 import ErrorBoundary from '../error-boundary/error-boundary';
 import { Error } from '../error/error';
@@ -14,19 +14,17 @@ import { IngredientDetails } from '../modal-window/ingredient-details/ingredient
 import { Modal } from '../modal-window/modal/modal';
 import { OrderDetails } from '../modal-window/order-details/order-details';
 
-import type { AppDispatch, RootState } from '@/store';
-
 import styles from './app.module.css';
 
 export const App = (): React.JSX.Element => {
   const { isLoading, error } = useGetIngredientsQuery();
   const { screenType } = useWindowSize();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
-  const isModalOpen = useSelector((state: RootState) => state.modal.isOpen);
-  const orderNum = useSelector((state: RootState) => state.modal.orderNum);
-  const ingredient = useSelector((state: RootState) => state.modal.ingredient);
-  const modalTitle = useSelector((state: RootState) => state.modal.title);
+  const isModalOpen = useAppSelector((state) => state.modal.isOpen);
+  const orderNum = useAppSelector((state) => state.modal.orderNum);
+  const ingredient = useAppSelector((state) => state.modal.ingredient);
+  const modalTitle = useAppSelector((state) => state.modal.title);
 
   if (isLoading) {
     return <Loader />;

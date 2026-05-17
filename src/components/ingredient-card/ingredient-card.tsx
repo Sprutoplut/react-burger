@@ -1,10 +1,9 @@
 import { useHover } from '@/hooks/useHover';
+import { useAppDispatch } from '@/hooks/useRedux';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { openModal } from '@/store/slices/modalSlice';
 import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
 
-import type { AppDispatch } from '@/store';
 import type { TIngredient } from '@/utils/types';
 
 import styles from './ingredient-card.module.css';
@@ -20,7 +19,7 @@ export const IngredientCard = ({
 }: TIngredientCard): React.JSX.Element => {
   const { type, onMouseEnter, onMouseLeave } = useHover();
   const { screenType } = useWindowSize();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const handleOpenModal = (): void => {
     dispatch(
       openModal({

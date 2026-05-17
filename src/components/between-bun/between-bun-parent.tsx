@@ -1,9 +1,9 @@
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { findCartSelector } from '@/store/selectors/cartSelector';
 import { moveCart } from '@/store/slices/cartSlice';
 import { useCallback, type FC, memo, useRef, useEffect } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { BetweenBun } from '../between-bun/between-bun';
 
@@ -30,9 +30,9 @@ export const BetweenBunParent: FC<TBetweenBunParent> = memo(function BetweenBunP
   onDragStart,
   onDragEnd,
 }) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const dragRef = useRef<HTMLLIElement>(null);
-  const ingredientIndex = useSelector(findCartSelector(ingredient.nanoid)).index;
+  const ingredientIndex = useAppSelector(findCartSelector(ingredient.nanoid)).index;
 
   const handleHover = useCallback(
     (item: Item) => {

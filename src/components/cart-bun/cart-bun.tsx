@@ -1,10 +1,9 @@
+import { useAppDispatch } from '@/hooks/useRedux';
 import { addToCart } from '@/store/slices/cartSlice';
 import { ConstructorElement } from '@krgaa/react-developer-burger-ui-components';
 import { useRef } from 'react';
 import { useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
 
-import type { AppDispatch } from '@/store';
 import type { TIngredient } from '@/utils/types';
 
 import styles from './cart-bun.module.css';
@@ -15,13 +14,13 @@ export type TCartBun = {
 };
 
 export const CartBun = ({ ingredient, direction }: TCartBun): React.JSX.Element => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const dragRef = useRef<HTMLLIElement>(null);
   const [, dropBun] = useDrop({
     accept: 'INGREDIENT',
-    drop: (item: TIngredient) => {
-      if (item.type === 'bun') {
-        dispatch(addToCart(item));
+    drop: (ingredient: TIngredient) => {
+      if (ingredient.type === 'bun') {
+        dispatch(addToCart(ingredient));
       }
     },
     collect: (monitor) => ({
