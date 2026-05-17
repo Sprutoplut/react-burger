@@ -60,8 +60,9 @@ export const cartSlice = createSlice({
       const [movedItem] = state.main.splice(fromIndex, 1);
       state.main.splice(to, 0, movedItem);
     },
+    clearCart: () => initialState,
   },
 });
 
-export const { addToCart, removeFromCart, moveCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, moveCart, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
