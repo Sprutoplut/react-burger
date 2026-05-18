@@ -1,9 +1,9 @@
-import { useCart } from '@/hooks/useCart.ts';
+import { useAppSelector } from '@/hooks/useRedux';
 import { useWindowSize } from '@/hooks/useWindowSize';
-import { Button } from '@krgaa/react-developer-burger-ui-components';
+import { selectIngredients } from '@/store/selectors/ingredientsSelectors';
 import { Fragment } from 'react/jsx-runtime';
 
-import { IngredientCard } from '../ingredient-card/ingredient-card';
+import { IngredientListItem } from './ingredient-list-item';
 
 import type { Ttype_ingredients } from '@/utils/types';
 
@@ -18,7 +18,7 @@ export const IngredientList = ({
   type_ingredient,
   cart,
 }: TIngredientList): React.JSX.Element => {
-  const { ingredients, addToCart } = useCart();
+  const ingredients = useAppSelector(selectIngredients);
 
   const { screenType } = useWindowSize();
   return (
@@ -28,26 +28,12 @@ export const IngredientList = ({
         {ingredients
           .filter((ingredient) => ingredient.type === type_ingredient.type)
           .map((ingredient) => (
-            <li
+            <IngredientListItem
               key={ingredient._id}
-              className={`${styles.card} ml-4 mr-4 mb-8`}
-              draggable="true"
-            >
-              <IngredientCard
-                ingredient={ingredient}
-                count={cart[ingredient._id] || 0}
-              ></IngredientCard>
-              {screenType === 'mobile' && (
-                <Button
-                  onClick={() => addToCart(ingredient._id)}
-                  size="medium"
-                  type="secondary"
-                  htmlType={'button'}
-                >
-                  Добавить
-                </Button>
-              )}
-            </li>
+              ingredient={ingredient}
+              screenType={screenType}
+              cart={cart}
+            />
           ))}
       </ul>
     </Fragment>

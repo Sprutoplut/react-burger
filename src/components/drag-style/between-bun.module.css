@@ -1,0 +1,6 @@
+.drag_preview {
+  display: flex;
+  align-items: center;
+  cursor: grabbing;
+  opacity: 1;
+}
