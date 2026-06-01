@@ -1,4 +1,24 @@
 .submenu {
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  padding-top: 8px;
+}
+
+.link_active {
+  color: var(--text-primary-color) !important;
+}
+
+.link {
+  color: var(--text-inactive-color);
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.link:hover {
+  color: var(--text-primary-color);
+}
+
+.submenu:last-child {
+  margin-bottom: 30px;
 }

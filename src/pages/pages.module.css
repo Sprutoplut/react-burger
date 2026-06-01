@@ -1,0 +1,25 @@
+.ingredient_page {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.ingredient_page h1 {
+  text-align: center;
+}
+
+.profile_save {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.not_found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 180px;
+}

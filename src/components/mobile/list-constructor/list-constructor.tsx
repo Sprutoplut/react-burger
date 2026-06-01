@@ -60,7 +60,7 @@ export const ListConstructor = ({
   dropMain(dropRef);
 
   return (
-    <ul className={`${styles.list} pb-10`} ref={dropRef}>
+    <ul className={`${styles.list} pb-10 pr-2`} ref={dropRef}>
       {bun !== null ? <ListItemBun ingredient={bun} /> : <ListItemEmpty isBun={true} />}
 
       {main.length !== 0 ? (

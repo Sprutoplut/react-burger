@@ -33,7 +33,7 @@ export const BetweenBun = ({ ingredient }: TBetweenBun): React.JSX.Element => {
       <ConstructorElement
         price={ingredient ? ingredient.price : 0}
         text={ingredient ? ingredient.name : 'Перенесите начинку'}
-        thumbnail={ingredient ? ingredient.image_mobile : 'loading.svg'}
+        thumbnail={ingredient ? ingredient.image_mobile : '/loading.svg'}
         isLocked={ingredient ? false : true}
         handleClose={ingredient ? handleRemove : undefined}
       />

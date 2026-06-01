@@ -10,33 +10,34 @@ import styles from './withsub.module.css';
 type TMenuItemWithSubMobile = {
   text: string;
   icon: ReactNode;
-  href?: string;
-  isClick: boolean;
+  isOpen: boolean;
   onClick: () => void;
   arrItem: TValueSubMenuItems[];
+  onSubItemClick: () => void;
 };
 
 export const MenuItemWithSubMobile = ({
   text,
   icon,
-  isClick,
+  isOpen,
   onClick,
   arrItem,
+  onSubItemClick,
 }: TMenuItemWithSubMobile): React.JSX.Element => {
   return (
     <div className={styles.sub_container}>
-      <a className={`${styles.withsub} pb-3 pt-3`} onClick={onClick}>
+      <div className={`${styles.withsub} pb-3 pt-3`} onClick={onClick}>
         <div className={styles.withsub_ico}>
           {icon}
           <p
-            className={`text ${!isClick && 'text_color_inactive'} text_type_main-default`}
+            className={`text ${!isOpen ? 'text_color_inactive' : ''} text_type_main-default`}
           >
             {text}
           </p>
         </div>
-        {isClick ? <ArrowUpIcon type="primary" /> : <ArrowDownIcon type="primary" />}
-      </a>
-      {isClick && <SubMenuMobile arrItem={arrItem} isClick={isClick} />}
+        {isOpen ? <ArrowUpIcon type="primary" /> : <ArrowDownIcon type="primary" />}
+      </div>
+      {isOpen && <SubMenuMobile arrItem={arrItem} onSubItemClick={onSubItemClick} />}
     </div>
   );
 };

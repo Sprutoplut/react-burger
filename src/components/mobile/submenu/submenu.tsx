@@ -1,36 +1,36 @@
-import { useMemo, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
-import { SubMenuItemMobile } from '../submenu-item/submenu-item';
+import { LogoutItem } from './sublogout';
 
-import type { TValueMenuItems } from '@/utils/types';
+import type { TValueSubMenuItems } from '@/utils/types';
 
 import styles from './submenu.module.css';
 
 type TSubMenuMobile = {
-  arrItem: TValueMenuItems[];
-  isClick: boolean;
+  arrItem: TValueSubMenuItems[];
+  onSubItemClick: () => void;
 };
 
 export const SubMenuMobile = ({
   arrItem,
-  isClick,
+  onSubItemClick,
 }: TSubMenuMobile): React.JSX.Element => {
-  const [activeSubItem, setActiveSubItem] = useState<string | null>(null);
-  const active = useMemo(() => {
-    if (!isClick) return false;
-    else return true;
-  }, [isClick]);
   return (
     <div className={`${styles.submenu} pl-8`}>
       {arrItem.map((item) => (
-        <SubMenuItemMobile
+        <NavLink
           key={item.text}
-          text={item.text}
-          href={item.href}
-          isClick={active === true && activeSubItem === item.text}
-          onClick={() => setActiveSubItem(item.text)}
-        />
+          to={item.href}
+          end
+          className={({ isActive }) =>
+            `text text_type_main-default ml-2 ${styles.link} ${isActive && styles.link_active}`
+          }
+          onClick={onSubItemClick}
+        >
+          {item.text}
+        </NavLink>
       ))}
+      <LogoutItem />
     </div>
   );
 };

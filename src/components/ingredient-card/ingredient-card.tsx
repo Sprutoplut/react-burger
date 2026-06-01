@@ -1,8 +1,8 @@
 import { useHover } from '@/hooks/useHover';
 import { useAppDispatch } from '@/hooks/useRedux';
-import { useWindowSize } from '@/hooks/useWindowSize';
-import { openModal } from '@/store/slices/modalSlice';
+import { openIngredient } from '@/store/slices/modalSlice';
 import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import type { TIngredient } from '@/utils/types';
 
@@ -17,17 +17,18 @@ export const IngredientCard = ({
   ingredient,
   count,
 }: TIngredientCard): React.JSX.Element => {
+  const location = useLocation();
   const { type, onMouseEnter, onMouseLeave } = useHover();
-  const { screenType } = useWindowSize();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const handleOpenModal = (): void => {
-    dispatch(
-      openModal({
-        ingredient: ingredient,
-        title: screenType === 'desktop' ? 'Детали ингредиента' : '',
-      })
-    );
+    void navigate(`/ingredients/${ingredient._id}`, {
+      state: { background: location, ingredient: ingredient },
+    });
+    dispatch(openIngredient({ title: 'Детали ингредиента' }));
   };
+
   return (
     <div
       className={styles.card_container}

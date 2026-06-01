@@ -9,7 +9,7 @@ type TListItemEmpty = {
 export const ListItemEmpty = ({ isBun }: TListItemEmpty): React.JSX.Element => (
   <li className={`${styles.list_item} pb-4 pt-4`}>
     <div className={`${styles.list_content} mr-2`}>
-      <img src="loading.svg" alt={'loading'} />
+      <img src={'/loading.svg'} alt={'loading'} />
       <p className="text text_type_main-default">
         {isBun ? 'Выберите булочку' : 'Выберите начинку'}
       </p>

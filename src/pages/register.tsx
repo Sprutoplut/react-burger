@@ -1,0 +1,44 @@
+import { Input, PasswordInput } from '@krgaa/react-developer-burger-ui-components';
+
+import type { ChangeEvent } from 'react';
+
+type TRegisterPage = {
+  formData: {
+    name: string;
+    email: string;
+    password: string;
+  };
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+};
+
+export const RegisterPage = ({
+  formData,
+  onChange,
+}: TRegisterPage): React.JSX.Element => {
+  return (
+    <>
+      <Input
+        name="name"
+        type="text"
+        placeholder="Имя"
+        value={formData.name}
+        onChange={onChange}
+      />
+
+      <Input
+        name="email"
+        type="email"
+        placeholder="E-mail"
+        value={formData.email}
+        onChange={onChange}
+      />
+
+      <PasswordInput
+        name="password"
+        placeholder="Пароль"
+        value={formData.password}
+        onChange={onChange}
+      />
+    </>
+  );
+};

@@ -1,7 +1,6 @@
-import { Loader } from '@/components/loader/loader';
 import { useCart } from '@/hooks/useCart';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
-import { openModal } from '@/store/slices/modalSlice';
+import { openOrderModal } from '@/store/slices/modalSlice';
 import { Button, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 
 import { Error } from '../../error/error';
@@ -16,7 +15,7 @@ type TFooter = {
 export const Footer = ({ onClick, active }: TFooter): React.JSX.Element => {
   const bun = useAppSelector((state) => state.cart.bun);
   const dispatch = useAppDispatch();
-  const { total, getOrderNumber, isLoading, error } = useCart();
+  const { total, getOrderNumber, error } = useCart();
   const handleOpenModal = async (): Promise<void> => {
     if (!active) {
       onClick();
@@ -25,7 +24,7 @@ export const Footer = ({ onClick, active }: TFooter): React.JSX.Element => {
 
       if (orderNumber !== null) {
         dispatch(
-          openModal({
+          openOrderModal({
             orderNum: orderNumber,
             title: 'Заказ оформлен',
           })
@@ -33,9 +32,6 @@ export const Footer = ({ onClick, active }: TFooter): React.JSX.Element => {
       }
     }
   };
-  if (isLoading) {
-    return <Loader />;
-  }
 
   if (error) {
     return <Error text="Ошибка получения данных" />;
