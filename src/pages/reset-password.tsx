@@ -1,6 +1,6 @@
 import { Input, PasswordInput } from '@krgaa/react-developer-burger-ui-components';
-
-import type { ChangeEvent } from 'react';
+import { useEffect, type ChangeEvent } from 'react';
+import { Navigate } from 'react-router-dom';
 
 type TResetPasswordPage = {
   formData: {
@@ -14,6 +14,19 @@ export const ResetPasswordPage = ({
   formData,
   onChange,
 }: TResetPasswordPage): React.JSX.Element => {
+  const isResetAllowed = localStorage.getItem('resetPasswordAllowed') === 'true';
+
+  useEffect((): (() => void) => {
+    return (): void => {
+      if (localStorage.getItem('resetPasswordAllowed')) {
+        localStorage.removeItem('resetPasswordAllowed');
+      }
+    };
+  }, []);
+
+  if (!isResetAllowed) {
+    return <Navigate to="/forgot-password" replace />;
+  }
   return (
     <>
       <PasswordInput

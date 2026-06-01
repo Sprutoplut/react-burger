@@ -1,7 +1,9 @@
+import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { openOrderModal } from '@/store/slices/modalSlice';
 import { Button, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Error } from '../../error/error';
 
@@ -14,14 +16,24 @@ type TFooter = {
 
 export const Footer = ({ onClick, active }: TFooter): React.JSX.Element => {
   const bun = useAppSelector((state) => state.cart.bun);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isAuthenticated, isLoading } = useAuth();
   const dispatch = useAppDispatch();
   const { total, getOrderNumber, error } = useCart();
   const handleOpenModal = async (): Promise<void> => {
     if (!active) {
       onClick();
     } else {
-      const orderNumber = await getOrderNumber();
+      if (!isAuthenticated && !isLoading) {
+        void navigate('/login', {
+          state: { from: location.pathname },
+          replace: true,
+        });
+        return;
+      }
 
+      const orderNumber = await getOrderNumber();
       if (orderNumber !== null) {
         dispatch(
           openOrderModal({

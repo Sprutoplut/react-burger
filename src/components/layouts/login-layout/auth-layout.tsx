@@ -81,13 +81,6 @@ export const AuthLayout = <T extends TAuthType>({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const isResetAllowed = localStorage.getItem('resetPasswordAllowed') === 'true';
-
-  if (type === 'reset-password' && !isResetAllowed) {
-    void navigate('/forgot-password', { replace: true });
-    return null;
-  }
-
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     void performSubmit();
