@@ -4,7 +4,8 @@ import {
   ListIcon,
   ProfileIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useState, type ReactNode } from 'react';
+import { useState, type ReactNode, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { MenuItemMobile } from '../menu-item/menu-item';
 import { MobileHead } from '../mobile-head/mobile-head';
@@ -19,7 +20,28 @@ type TMenuMobile = {
 };
 
 export const MenuMobile = ({ onClose }: TMenuMobile): React.JSX.Element => {
-  const [activeItem, setActiveItem] = useState<string>(menu[1].text);
+  const location = useLocation();
+  const [activeItem, setActiveItem] = useState<string>('');
+
+  useEffect(() => {
+    for (const item of menu) {
+      if (item.href && `/${item.href}` === location.pathname) {
+        setActiveItem(item.text);
+        return;
+      }
+
+      if (item.submenu) {
+        const hasActiveSubItem = item.submenu.some(
+          (subItem) => subItem.href === location.pathname
+        );
+        if (hasActiveSubItem) {
+          setActiveItem(item.text);
+          return;
+        }
+      }
+    }
+    setActiveItem('');
+  }, [location.pathname]);
 
   const getIcon = (
     iconType: string | undefined,
@@ -37,12 +59,16 @@ export const MenuMobile = ({ onClose }: TMenuMobile): React.JSX.Element => {
     }
   };
 
-  const handleMenuSubItemClick = (text: string): void => {
-    if (activeItem === text) {
-      setActiveItem('');
+  const handleMenuItemClick = (item: (typeof menu)[0]): void => {
+    if (item.submenu) {
+      setActiveItem(activeItem === item.text ? '' : item.text);
     } else {
-      setActiveItem(text);
+      onClose();
     }
+  };
+
+  const handleSubMenuItemClick = (): void => {
+    onClose();
   };
 
   return (
@@ -59,8 +85,8 @@ export const MenuMobile = ({ onClose }: TMenuMobile): React.JSX.Element => {
                 activeItem === item.text ? 'primary' : 'secondary'
               )}
               href={item.href}
-              isClick={activeItem === item.text}
-              onClick={() => setActiveItem(item.text)}
+              onClick={() => handleMenuItemClick(item)}
+              onClose={onClose}
             />
           ) : (
             <MenuItemWithSubMobile
@@ -70,10 +96,10 @@ export const MenuMobile = ({ onClose }: TMenuMobile): React.JSX.Element => {
                 item.iconType,
                 activeItem === item.text ? 'primary' : 'secondary'
               )}
-              href={item.href}
-              isClick={activeItem === item.text}
-              onClick={() => handleMenuSubItemClick(item.text)}
+              isOpen={activeItem === item.text}
+              onClick={() => handleMenuItemClick(item)}
               arrItem={item.submenu}
+              onSubItemClick={handleSubMenuItemClick}
             />
           )
         )}

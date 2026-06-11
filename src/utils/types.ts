@@ -27,13 +27,13 @@ export type TCart = {
 export type TValueMenuItems = {
   text: string;
   iconType?: string;
-  href?: string;
+  href: string;
   submenu?: TValueSubMenuItems[];
 };
 
 export type TValueSubMenuItems = {
   text: string;
-  href?: string;
+  href: string;
 };
 
 export type Ttype_ingredients = (typeof type_ingredients)[number];
@@ -54,4 +54,24 @@ export type OrderResponse = {
   };
   success: boolean;
   name: string;
+};
+
+export type LoginFormData = {
+  email: string;
+  password: string;
+};
+
+export type RegisterFormData = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type ForgotPasswordFormData = {
+  email: string;
+};
+
+export type ResetPasswordFormData = {
+  password: string;
+  token: string;
 };

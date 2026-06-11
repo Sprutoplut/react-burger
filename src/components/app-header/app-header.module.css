@@ -19,6 +19,11 @@
   display: flex;
   color: var(--text-inactive-color);
   text-decoration: none;
+  transition: 0.3s;
+}
+
+.link:hover {
+  color: var(--text-primary-color);
 }
 
 .link_active {

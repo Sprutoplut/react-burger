@@ -11,12 +11,11 @@ type BurgerConstructorData = {
   main: TIngredientNanoid[];
   total: number;
   getOrderNumber: () => Promise<number | null>;
-  isLoading: boolean;
   error: unknown;
 };
 
 export const useCart = (): BurgerConstructorData => {
-  const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+  const [createOrder, { error }] = useCreateOrderMutation();
   const dispatch = useAppDispatch();
   const bun = useAppSelector((state) => state.cart.bun);
   const main = useAppSelector((state) => state.cart.main);
@@ -50,7 +49,6 @@ export const useCart = (): BurgerConstructorData => {
     main,
     total,
     getOrderNumber,
-    isLoading,
     error,
   };
 };

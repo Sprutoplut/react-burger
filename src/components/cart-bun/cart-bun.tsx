@@ -40,7 +40,7 @@ export const CartBun = ({ ingredient, direction }: TCartBun): React.JSX.Element 
           (direction === 'top' ? 'верх' : 'низ') +
           ')'
         }
-        thumbnail={ingredient !== null ? ingredient.image_mobile : 'loading.svg'}
+        thumbnail={ingredient !== null ? ingredient.image_mobile : '/loading.svg'}
         type={direction}
       />
     </li>

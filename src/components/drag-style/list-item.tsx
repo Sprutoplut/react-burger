@@ -56,13 +56,12 @@ export const ListItemLayer = (): React.JSX.Element | null => {
     return null;
   }
 
-  // Заглушки для пропсов
   const noop = (): void => {
-    // Пустая функция для пропсов, которые не используются в drag preview
+    // Пустая функция-заглушка
   };
 
   const noopWithId = (_id: string): void => {
-    // Пустая функция для пропсов, которые не используются в drag preview
+    // Пустая функция-заглушка с параметром
   };
 
   return (

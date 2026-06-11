@@ -1,46 +1,73 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import type { TIngredient } from '@/utils/types';
-
 type ModalState = {
   isOpen: boolean;
-  orderNum: number | undefined;
-  ingredient: TIngredient | undefined;
+  type: 'order' | 'ingredient' | null;
+  orderNum: number | null;
   title: string;
 };
 
 const initialState: ModalState = {
   isOpen: false,
-  orderNum: undefined,
-  ingredient: undefined,
+  type: null,
+  orderNum: null,
   title: '',
 };
 
-export const modalSlice = createSlice({
+const loadState = (): ModalState => {
+  try {
+    const savedState = sessionStorage.getItem('modalState');
+    if (savedState) {
+      const parsedState = JSON.parse(savedState) as ModalState;
+      return parsedState;
+    }
+  } catch (error) {
+    console.error('Error loading modal state:', error);
+  }
+  return initialState;
+};
+
+const saveState = (state: ModalState): void => {
+  try {
+    sessionStorage.setItem('modalState', JSON.stringify(state));
+  } catch (error) {
+    console.error('Error saving modal state:', error);
+  }
+};
+
+const modalSlice = createSlice({
   name: 'modal',
-  initialState,
+  initialState: loadState(),
   reducers: {
-    openModal: (
+    openOrderModal: (
       state,
-      action: PayloadAction<{
-        orderNum?: number;
-        ingredient?: TIngredient;
-        title: string;
-      }>
+      action: PayloadAction<{ orderNum: number; title?: string }>
     ) => {
       state.isOpen = true;
+      state.type = 'order';
       state.orderNum = action.payload.orderNum;
-      state.ingredient = action.payload.ingredient;
-      state.title = action.payload.title;
+      state.title = action.payload.title ?? '';
     },
+
+    openIngredient: (state, action: PayloadAction<{ title?: string }>) => {
+      state.isOpen = true;
+      state.type = 'ingredient';
+      state.orderNum = null;
+      state.title = action.payload.title ?? '';
+      saveState(state);
+    },
+
     closeModal: (state) => {
       state.isOpen = false;
-      state.orderNum = undefined;
-      state.ingredient = undefined;
+      state.type = null;
+      state.orderNum = null;
       state.title = '';
+      saveState(state);
+      sessionStorage.removeItem('modalState');
     },
   },
 });
 
-export const { openModal, closeModal } = modalSlice.actions;
+export const { openOrderModal, openIngredient, closeModal } = modalSlice.actions;
+
 export default modalSlice.reducer;

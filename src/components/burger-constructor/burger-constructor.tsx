@@ -1,15 +1,16 @@
+import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { useDragState } from '@/hooks/useDrag';
 import { useAppDispatch } from '@/hooks/useRedux';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { addToCart } from '@/store/slices/cartSlice';
-import { openModal } from '@/store/slices/modalSlice';
+import { openOrderModal } from '@/store/slices/modalSlice';
 import { useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { BetweenBunLayer } from '../drag-style/between-bun';
 import { ListItemLayer } from '../drag-style/list-item';
 import { Error } from '../error/error';
-import { Loader } from '../loader/loader';
 import { DesktopBurgerConstructor } from './burger-constructor-desktop';
 import { MobileBurgerConstructor } from './burger-constructor-mobile';
 
@@ -25,15 +26,26 @@ export const BurgerConstructor = ({
   onClose,
 }: TBurgerConstructor): React.JSX.Element => {
   const dispatch = useAppDispatch();
-  const { bun, main, total, getOrderNumber, isLoading, error } = useCart();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { bun, main, total, getOrderNumber, error } = useCart();
   const { screenType } = useWindowSize();
   const { draggedIngredientId, handleDragStart, handleDragEnd } = useDragState();
+  const { isAuthenticated, isLoading } = useAuth();
 
   const handleOpenModal = async (): Promise<void> => {
+    if (!isAuthenticated && !isLoading) {
+      void navigate('/login', {
+        state: { from: location.pathname },
+        replace: true,
+      });
+      return;
+    }
+
     const orderNumber = await getOrderNumber();
     if (orderNumber !== null) {
       dispatch(
-        openModal({
+        openOrderModal({
           orderNum: orderNumber,
           title: '',
         })
@@ -50,7 +62,6 @@ export const BurgerConstructor = ({
     [dispatch]
   );
 
-  if (isLoading) return <Loader />;
   if (error) return <Error text="Ошибка получения данных" />;
 
   return (
