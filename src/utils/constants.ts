@@ -29,7 +29,7 @@ type TAuthConfig = {
   title: string;
   buttonText: string;
   firstLink: TLinkConfig;
-  secondLink?: TLinkConfig; // Делаем опциональным
+  secondLink?: TLinkConfig;
 };
 
 export const configLogin: Record<string, TAuthConfig> = {

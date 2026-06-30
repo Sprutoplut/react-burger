@@ -32,7 +32,6 @@ export const useCart = (): BurgerConstructorData => {
       return createOrder({ ingredients: ingredientIds })
         .unwrap()
         .then((response) => {
-          // Очищаем корзину после успешного заказа
           dispatch(clearCart());
           return response.order.number;
         })

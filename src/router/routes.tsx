@@ -1,6 +1,7 @@
 import { AuthLayout } from '@/components/layouts/login-layout/auth-layout';
 import { ProfileLayout } from '@/components/layouts/profile-layout/profile-layout';
 import { RootLayout } from '@/components/layouts/root-layout/root-layout';
+import { OrderDetail } from '@/components/order-detail/order-detail';
 import { Feed } from '@/pages/feed';
 import { ForgotPasswordPage } from '@/pages/forgot-password';
 import { Home } from '@/pages/home';
@@ -27,6 +28,10 @@ export const routes: RouteObject[] = [
       {
         path: 'feed',
         element: <Feed />,
+      },
+      {
+        path: 'feed/:id',
+        element: <OrderDetail />,
       },
       {
         path: 'login',
@@ -91,6 +96,10 @@ export const routes: RouteObject[] = [
           {
             path: 'orders',
             element: <Orders />,
+          },
+          {
+            path: 'orders/:id',
+            element: <OrderDetail />,
           },
         ],
       },

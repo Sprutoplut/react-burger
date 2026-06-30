@@ -22,9 +22,7 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: {
-      // Action creator с генерацией nanoid
       prepare: (ingredient: TIngredient) => {
-        // Генерация ID происходит здесь, в action creator
         const cnanoid = nanoid();
 
         return {

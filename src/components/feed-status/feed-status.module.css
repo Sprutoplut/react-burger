@@ -1,0 +1,20 @@
+.feed_container_numbers {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.feed_ready_numbers {
+  color: #0cc;
+}
+
+.feed_pending_numbers {
+  color: #f2f2f3;
+}
+
+.feed_numbers {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 8px;
+  height: 154px;
+}

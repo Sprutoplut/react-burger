@@ -1,0 +1,29 @@
+.feed_card {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  width: 100%;
+  height: 214px;
+  background-color: #1c1c21;
+  border-radius: 40px;
+}
+
+.card_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.card_ingredient {
+  display: flex;
+  flex-direction: row;
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}

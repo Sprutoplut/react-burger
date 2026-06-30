@@ -1,0 +1,51 @@
+.ingredient_overlay,
+.ingredient_withoutoverlay {
+  width: 60px;
+  height: 60px;
+  margin-right: -16px;
+  overflow: hidden;
+  background: #131316;
+  border-radius: 50%;
+}
+
+.ingredient_overlay {
+  position: relative;
+}
+
+.ingredient_overlay img,
+.ingredient_withoutoverlay img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.ingredient_overlay img {
+  opacity: 0.6;
+}
+
+.remaining_count {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  color: #f2f2f3;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: 'Jet Brains Mono', monospace;
+  line-height: 24px;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 90%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.ingredient_circle {
+  width: 64px;
+  height: 64px;
+  margin-right: -16px;
+  padding-top: 2px;
+  padding-left: 2px;
+  background: linear-gradient(135deg, #801ab2, #4c4cff);
+  border-radius: 50%;
+}

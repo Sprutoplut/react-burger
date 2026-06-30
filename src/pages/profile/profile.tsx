@@ -108,7 +108,7 @@ export const ProfilePage = (): React.JSX.Element => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="mt-20">
       <Input
         name="name"
         type="text"

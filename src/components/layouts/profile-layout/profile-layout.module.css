@@ -15,8 +15,10 @@
   justify-content: start;
   align-items: start;
   gap: 60px;
-  width: 1240px;
+  width: 1260px;
+  height: 100%;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 .profile form {
@@ -49,6 +51,10 @@
 
 .profile_links p {
   text-align: start;
+}
+
+.descript {
+  width: 320px;
 }
 
 @media (width <= 900px) {
