@@ -1,0 +1,18 @@
+.order_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.name {
+  width: 100%;
+  text-align: start;
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  text-wrap: nowrap;
+}

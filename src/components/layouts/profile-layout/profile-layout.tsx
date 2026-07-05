@@ -1,6 +1,6 @@
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { useLogoutMutation } from '@/store/api/authApi';
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 
 import styles from './profile-layout.module.css';
 
@@ -8,6 +8,7 @@ export const ProfileLayout = (): React.JSX.Element => {
   const { screenType } = useWindowSize();
   const [logout] = useLogoutMutation();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = (e: React.MouseEvent): void => {
     e.preventDefault();
@@ -24,9 +25,9 @@ export const ProfileLayout = (): React.JSX.Element => {
   };
 
   return (
-    <div className={`${styles.profile} pl-4 mt-30`}>
+    <div className={`${styles.profile} pl-4 mt-10`}>
       {screenType === 'desktop' && (
-        <div className={styles.profile_links}>
+        <div className={`${styles.profile_links} mt-20`}>
           <NavLink
             to="/profile"
             end
@@ -50,8 +51,13 @@ export const ProfileLayout = (): React.JSX.Element => {
           >
             Выход
           </button>
-          <p className="text text_type_main-default text_color_inactive">
-            В этом разделе вы можете изменить свои персональные данные
+          <p
+            className={`text text_type_main-default text_color_inactive ${styles.descript}`}
+          >
+            {location.pathname === '/profile' &&
+              'В этом разделе вы можете изменить свои персональные данные'}
+            {location.pathname === '/profile/orders' &&
+              'В этом разделе вы можете просмотреть свою историю заказов'}
           </p>
         </div>
       )}

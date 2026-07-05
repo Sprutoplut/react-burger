@@ -1,4 +1,3 @@
-// src/store/api/authApi.ts
 import { API_URL } from '@/utils/constants';
 import {
   createApi,
@@ -121,7 +120,7 @@ const isAuthError = (error: unknown): error is FetchBaseQueryError => {
 let refreshAttempts = 0;
 const MAX_REFRESH_ATTEMPTS = 1;
 
-const baseQueryWithReauth: BaseQueryFn<
+export const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,
   FetchBaseQueryError
@@ -159,7 +158,6 @@ const baseQueryWithReauth: BaseQueryFn<
       window.location.href = '/login';
     }
   }
-
   return result;
 };
 

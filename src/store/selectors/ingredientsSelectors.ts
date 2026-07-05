@@ -1,4 +1,4 @@
-import type { RootState } from '../index';
+import type { RootState } from '@/store';
 import type { TIngredient } from '@/utils/types';
 
 export const selectIngredients = (state: RootState): TIngredient[] => {

@@ -1,4 +1,6 @@
 import type { type_ingredients } from './constants';
+import type { OrdersState } from '@/store/slices/ordersSlice';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 export type TIngredient = {
   _id: string;
@@ -75,3 +77,27 @@ export type ResetPasswordFormData = {
   password: string;
   token: string;
 };
+export type WebSocketAction = {
+  type: string;
+  payload?: PayloadAction;
+};
+
+export type WebSocketConfig = {
+  url: string;
+  reconnectInterval?: number;
+  maxReconnectAttempts?: number;
+  onMessage?: (data: OrdersState) => void;
+  onOpen?: () => void;
+  onClose?: () => void;
+  onError?: (error: Event) => void;
+};
+
+export type WebSocketManager = Record<
+  string,
+  {
+    ws: WebSocket | null;
+    subscribers: number;
+    reconnectAttempts: number;
+    config: WebSocketConfig;
+  }
+>;
