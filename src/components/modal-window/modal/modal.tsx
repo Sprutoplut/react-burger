@@ -61,7 +61,7 @@ export const Modal = ({
   return createPortal(
     <>
       <ModalOverlay onClick={closeModal} />
-      <div className={`${styles.modal} p-10`}>
+      <div className={`${styles.modal} p-10`} data-testid="modal">
         <div className={styles.modal_header}>
           <h1 className="text text_type_main-large">{title}</h1>
           <div

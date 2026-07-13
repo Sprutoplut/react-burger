@@ -35,6 +35,7 @@ export const IngredientCard = ({
       onClick={handleOpenModal}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      data-testid="ingredient-card"
     >
       {count >= 1 && <Counter count={count} size="default" />}
       <img src={ingredient.image} alt={ingredient.name} draggable="false" />

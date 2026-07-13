@@ -20,7 +20,7 @@ export default defineConfig({
     enabledMode: ['development'],
     esmExport: true
   }), tsconfigPaths()],
-  base: '',
+  base: '/react-burger/',
   server: {
     open: true
   },
