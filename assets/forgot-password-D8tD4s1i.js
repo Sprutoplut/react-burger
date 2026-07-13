@@ -1,0 +1,1 @@
+import{j as r,A as o}from"./index-Byd9Kfqs.js";const s=({formData:e,onChange:a})=>r.jsx(o,{name:"email",type:"email",placeholder:"Укажите e-mail",value:e.email,onChange:a});export{s as ForgotPasswordPage};

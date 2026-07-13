@@ -1,0 +1,1 @@
+import{j as t}from"./index-Byd9Kfqs.js";import{s}from"./pages.module-3sAjaL5t.js";const a=()=>t.jsxs("div",{className:s.not_found,children:[t.jsx("h1",{className:"text text_type_digits-large",children:"404"}),t.jsx("p",{className:"text text_type_main-large",children:"Страница не найдена"})]});export{a as NotFound};

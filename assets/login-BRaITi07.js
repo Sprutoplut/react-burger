@@ -1,0 +1,1 @@
+import{j as e,A as r,B as l}from"./index-Byd9Kfqs.js";const i=({formData:s,onChange:a})=>e.jsxs(e.Fragment,{children:[e.jsx(r,{name:"email",type:"email",placeholder:"E-mail",value:s.email,onChange:a}),e.jsx(l,{name:"password",placeholder:"Пароль",value:s.password,onChange:a})]});export{i as LoginPage};
