@@ -1,22 +1,13 @@
 import { describe, it, expect, vi } from 'vitest';
 
-import modalReducer, { openOrderModal, openIngredient, closeModal } from './modalSlice';
-
-type ModalState = {
-  isOpen: boolean;
-  type: 'order' | 'ingredient' | null;
-  orderNum: number | null;
-  title: string;
-};
+import modalReducer, {
+  openOrderModal,
+  openIngredient,
+  closeModal,
+  initialState,
+} from './modalSlice';
 
 describe('modalSlice', () => {
-  const initialState: ModalState = {
-    isOpen: false,
-    type: null,
-    orderNum: null,
-    title: '',
-  };
-
   describe('Начальное состояние', () => {
     it('должен возвращать начальное состояние, если нет сохраненных данных', () => {
       vi.stubGlobal('sessionStorage', {

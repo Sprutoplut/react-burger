@@ -8,20 +8,12 @@ import ordersReducer, {
   wsClose,
   wsError,
   wsMessage,
+  initialState,
   type OrdersState,
   type Order,
 } from './ordersSlice';
 
 describe('ordersSlice', () => {
-  const initialState: OrdersState = {
-    orders: [],
-    total: 0,
-    totalToday: 0,
-    isConnected: false,
-    error: null,
-    status: 'offline',
-  };
-
   const mockOrder: Order = {
     _id: '123',
     ingredients: ['ing1', 'ing2'],

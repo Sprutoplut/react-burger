@@ -2,7 +2,7 @@ import { createSlice, nanoid, type PayloadAction } from '@reduxjs/toolkit';
 
 import type { TCart, TIngredient, TIngredientNanoid } from '@/utils/types';
 
-const initialState: TCart = {
+export const initialState: TCart = {
   bun: null,
   main: [],
 };

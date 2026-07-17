@@ -1,24 +1,16 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 import cartReducer, {
   addToCart,
   removeFromCart,
   moveCart,
   clearCart,
+  initialState,
 } from './cartSlice';
 
-import type { TCart, TIngredient } from '@/utils/types';
+import type { TIngredient } from '@/utils/types';
 
 describe('cartSlice', () => {
-  let initialState: TCart;
-
-  beforeEach(() => {
-    initialState = {
-      bun: null,
-      main: [],
-    };
-  });
-
   describe('Начальное состояние', () => {
     it('Должен вернуть начальное состояние', () => {
       expect(cartReducer(undefined, { type: 'unknown' })).toEqual(initialState);
@@ -142,7 +134,8 @@ describe('cartSlice', () => {
       __v: 0,
     };
 
-    beforeEach(() => {
+    it('перемещение с одной позиции на другую', () => {
+      let state = { ...initialState };
       const ingredients = [
         { ...mockMainIngredient, _id: '1', name: 'Ингредиент 1' },
         { ...mockMainIngredient, _id: '2', name: 'Ингредиент 2' },
@@ -150,14 +143,10 @@ describe('cartSlice', () => {
       ];
 
       ingredients.forEach((ing) => {
-        initialState = cartReducer(initialState, addToCart(ing));
+        state = cartReducer(state, addToCart(ing));
       });
-    });
 
-    it('перемещение с одной позиции на другую', () => {
-      const state = initialState;
       const idToMove = state.main[0].nanoid;
-
       const newState = cartReducer(state, moveCart({ id: idToMove, to: 2 }));
 
       expect(newState.main[2].nanoid).toBe(idToMove);

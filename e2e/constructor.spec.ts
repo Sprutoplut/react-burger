@@ -1,127 +1,139 @@
 import { test, expect } from '@playwright/test';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const INGREDIENTS = {
+  BUN_CRATOR: 'Краторная булка',
+  BUN_FLUORESCENT: 'Флюоресцентная булка',
+  SAUCE_SPICY_X: 'Соус Spicy-X',
+  FILLET_TETRAODON: 'Филе Люминесцентного тетраодонтимформа',
+} as const;
+
+const SELECTORS = {
+  INGREDIENT_CARD: '[data-testid="ingredient-card"]',
+  CONSTRUCTOR_DROP_ZONE: '[data-testid="constructor-drop-zone"]',
+  CONSTRUCTOR_DROP_ZONE_BUN: '[data-testid="constructor-drop-zone-bun"]',
+  TOTAL_PRICE: '[data-testid="total-price"]',
+  MODAL: '[data-testid="modal"]',
+  MODAL_TITLE: '[data-testid="h1-modal"]',
+} as const;
+
+const BUTTONS = {
+  ORDER: 'Оформить заказ',
+} as const;
+
+const getIngredientByText = (page: any, text: string) => {
+  return page.locator(SELECTORS.INGREDIENT_CARD).filter({ hasText: text }).first();
+};
 
 test.describe('Страница "Конструктор"', () => {
   test.beforeEach(async ({ page }) => {
-    
-    await page.goto('http://localhost:5173');
-    
-    await page.waitForSelector('[data-testid="ingredient-card"]', { timeout: 10000 });
+
+    await page.goto('/');
+    await page.waitForSelector(SELECTORS.INGREDIENT_CARD, { timeout: 10000 });
   });
 
   test.describe('Перетаскивание ингредиентов', () => {
     test('должен добавлять булку в конструктор при перетаскивании', async ({ page }) => {
-      const bun = page.locator('[data-testid="ingredient-card"]').filter({ hasText: 'Краторная булка' }).first();
-      
-      const dropZone = page.locator('[data-testid="constructor-drop-zone-bun"]').first();
+      const bun = getIngredientByText(page, INGREDIENTS.BUN_CRATOR);
+      const dropZone = page.locator(SELECTORS.CONSTRUCTOR_DROP_ZONE_BUN).first();
       
       await bun.dragTo(dropZone);
-
-      await expect(dropZone).toContainText('Краторная булка');
+      await expect(dropZone).toContainText(INGREDIENTS.BUN_CRATOR);
     });
 
     test('должен добавлять ингредиент в конструктор при перетаскивании', async ({ page }) => {
-      const ingredient = page.locator('[data-testid="ingredient-card"]').filter({ hasText: 'Соус Spicy-X' }).first();
-      
-      const dropZone = page.locator('[data-testid="constructor-drop-zone"]');
+      const ingredient = getIngredientByText(page, INGREDIENTS.SAUCE_SPICY_X);
+      const dropZone = page.locator(SELECTORS.CONSTRUCTOR_DROP_ZONE);
       
       await ingredient.dragTo(dropZone);
       
-      const ingredientItem = page.locator('[data-testid="constructor-drop-zone"]').first();
-      await expect(ingredientItem).toContainText('Соус Spicy-X');
+      const ingredientItem = dropZone.first();
+      await expect(ingredientItem).toContainText(INGREDIENTS.SAUCE_SPICY_X);
     });
 
     test('должен обновлять общую стоимость при добавлении ингредиентов', async ({ page }) => {
-      const dropZone = page.locator('[data-testid="constructor-drop-zone"]');
+      const dropZone = page.locator(SELECTORS.CONSTRUCTOR_DROP_ZONE);
+      const initialPrice = await page.locator(SELECTORS.TOTAL_PRICE).textContent();
       
-      const initialPrice = await page.locator('[data-testid="total-price"]').textContent();
-      
-      const ingredient = page.locator('[data-testid="ingredient-card"]').filter({ hasText: 'Соус Spicy-X' }).first();
+      const ingredient = getIngredientByText(page, INGREDIENTS.SAUCE_SPICY_X);
       await ingredient.dragTo(dropZone);
+
       
-      const newPrice = await page.locator('[data-testid="total-price"]').textContent();
+      
+      const newPrice = await page.locator(SELECTORS.TOTAL_PRICE).textContent();
       expect(newPrice).not.toBe(initialPrice);
     });
 
     test('должен заменять булку при добавлении новой', async ({ page }) => {
-      const bun1 = page.locator('[data-testid="ingredient-card"]').filter({ hasText: 'Краторная булка' }).first();
-      const dropZone = page.locator('[data-testid="constructor-drop-zone-bun"]').first();
+      const bun1 = getIngredientByText(page, INGREDIENTS.BUN_CRATOR);
+      const dropZone = page.locator(SELECTORS.CONSTRUCTOR_DROP_ZONE_BUN).first();
+      
       await bun1.dragTo(dropZone);
+      await expect(dropZone).toContainText(INGREDIENTS.BUN_CRATOR);
       
-      await expect(dropZone).toContainText('Краторная булка');
-      
-      const bun2 = page.locator('[data-testid="ingredient-card"]').filter({ hasText: 'Флюоресцентная булка' }).first();
+      const bun2 = getIngredientByText(page, INGREDIENTS.BUN_FLUORESCENT);
       await bun2.dragTo(dropZone);
       
-      await expect(dropZone).toContainText('Флюоресцентная булка');
+      await expect(dropZone).toContainText(INGREDIENTS.BUN_FLUORESCENT);
     });
   });
 
   test.describe('Создание заказа', () => {
     test('должен создавать заказ при нажатии на кнопку', async ({ page }) => {
+
       await page.addInitScript(() => {
         localStorage.setItem('accessToken', 'Bearer mock-token');
         localStorage.setItem('refreshToken', 'mock-refresh-token');
       });
 
-      await page.route('**/auth/user', async (route) => {
-        await route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify({
-            success: true,
-            user: {
-              email: 'test@example.com',
-              name: 'Test User'
-            }
-          })
-        });
+      const authHarPath = path.join(__dirname, 'fixtures', 'auth-user.har');
+      await page.routeFromHAR(authHarPath, {
+          url: '**/auth/user',
+          update: false,
       });
 
-      await page.route('**/orders', async (route) => {
-        console.log('✅ Order request intercepted!');
-        const headers = route.request().headers();
-        console.log('Order request headers:', headers);
-        
-        await route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify({
-            success: true,
-            order: {
-              number: 12345,
-            }
-          })
-        });
+      const ordersHarPath = path.join(__dirname, 'fixtures', 'orders.har');
+      await page.routeFromHAR(ordersHarPath, {
+          url: '**/orders',
+          update: false,
       });
-      await page.goto('http://localhost:5173');
-      await page.waitForSelector('[data-testid="ingredient-card"]', { timeout: 10000 });
+      await page.goto('/');
+      await page.waitForSelector(SELECTORS.INGREDIENT_CARD, { timeout: 10000 });
       
-      const bun = page.locator('[data-testid="ingredient-card"]').filter({ hasText: 'Краторная булка' }).first();
-      const dropZone = page.locator('[data-testid="constructor-drop-zone-bun"]').first();
+      const bun = getIngredientByText(page, INGREDIENTS.BUN_CRATOR);
+      const dropZone = page.locator(SELECTORS.CONSTRUCTOR_DROP_ZONE_BUN).first();
       await bun.dragTo(dropZone);
       
-      const ingredient = page.locator('[data-testid="ingredient-card"]').filter({ hasText: 'Филе Люминесцентного тетраодонтимформа' }).first();
-      const ingredientsDropZone = page.locator('[data-testid="constructor-drop-zone"]');
+      const ingredient = getIngredientByText(page, INGREDIENTS.FILLET_TETRAODON);
+      const ingredientsDropZone = page.locator(SELECTORS.CONSTRUCTOR_DROP_ZONE);
       await ingredient.dragTo(ingredientsDropZone);
 
-      const orderButton = page.locator('button', { hasText: 'Оформить заказ' });
+      const orderButton = page.locator('button', { hasText: BUTTONS.ORDER });
+
       await orderButton.click();
+      const afterClickUrl = page.url();
+      console.log('📍 URL после клика:', afterClickUrl);
       
-      const modal = page.locator('[data-testid="modal"]');
+      const modal = page.locator(SELECTORS.MODAL);
       await expect(modal).toBeVisible({ timeout: 10000 });
 
-      const orderNumber = page.locator('[data-testid="h1-modal"]');
+      const orderNumber = page.locator(SELECTORS.MODAL_TITLE);
       await expect(orderNumber).toBeVisible({ timeout: 10000 });
       
       const numberText = await orderNumber.textContent();
       expect(numberText).toMatch(/^\d+$/);
     });
+
     test('кнопка "Оформить заказ" должна быть disabled без булки', async ({ page }) => {
-      const ingredient = page.locator('[data-testid="ingredient-card"]').filter({ hasText: 'Филе Люминесцентного тетраодонтимформа' }).first();
-      const ingredientsDropZone = page.locator('[data-testid="constructor-drop-zone"]');
+      const ingredient = getIngredientByText(page, INGREDIENTS.FILLET_TETRAODON);
+      const ingredientsDropZone = page.locator(SELECTORS.CONSTRUCTOR_DROP_ZONE);
       await ingredient.dragTo(ingredientsDropZone);
       
-      const orderButton = page.locator('button', { hasText: 'Оформить заказ' });
+      const orderButton = page.locator('button', { hasText: BUTTONS.ORDER });
       await expect(orderButton).toBeDisabled();
     });
   });

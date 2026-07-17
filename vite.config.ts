@@ -20,7 +20,6 @@ export default defineConfig({
     enabledMode: ['development'],
     esmExport: true
   }), tsconfigPaths()],
-  base: '/react-burger/',
   server: {
     open: true
   },
@@ -30,7 +29,14 @@ export default defineConfig({
       test: {
         globals: true,
         environment: 'jsdom',
-        setupFiles: ['./vitest-setup.ts']
+        setupFiles: ['./vitest-setup.ts'],
+        exclude: [
+            '**/node_modules/**',
+            '**/dist/**',
+            '**/e2e/**',
+            '**/.{idea,git,cache,output,temp}/**',
+            '**/playwright/**'
+          ],
       }
     }, {
       extends: true,
