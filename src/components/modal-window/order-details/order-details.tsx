@@ -7,7 +7,9 @@ type TOrderDetails = {
 export const OrderDetails = ({ orderNum }: TOrderDetails): React.JSX.Element | null => {
   return (
     <div className={`${styles.content} pt-4 pb-20`}>
-      <h1 className="text text_type_digits-large mb-8">{orderNum}</h1>
+      <h1 className="text text_type_digits-large mb-8" data-testid="h1-modal">
+        {orderNum}
+      </h1>
       <p className="text text_type_main-medium mb-15">идентификатор заказа</p>
       <img src="done.png" alt="Заказ принят" className="mb-15" />
       <p className="text text_type_main-small mb-2">Ваш заказ начали готовить</p>

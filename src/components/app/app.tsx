@@ -1,6 +1,6 @@
 import { RoutesWithModal } from '@/router/routesWithModal';
 import { useGetIngredientsQuery } from '@/store/api/ingredientsApi';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 
 import ErrorBoundary from '../error-boundary/error-boundary';
 import { Error } from '../error/error';
@@ -18,9 +18,9 @@ export const App = (): React.JSX.Element => {
   }
   return (
     <ErrorBoundary>
-      <BrowserRouter>
+      <HashRouter>
         <RoutesWithModal />
-      </BrowserRouter>
+      </HashRouter>
     </ErrorBoundary>
   );
 };
