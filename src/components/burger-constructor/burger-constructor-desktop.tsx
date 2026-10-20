@@ -45,7 +45,11 @@ export const DesktopBurgerConstructor = ({
     <>
       <ul className={`${styles.cart_list_main} pb-10`}>
         <CartBun ingredient={bun} direction="top" />
-        <ul className={`${styles.cart_list} pl-8 pr-2`} ref={dropRef}>
+        <ul
+          className={`${styles.cart_list} pl-8 pr-2`}
+          data-testid="constructor-drop-zone"
+          ref={dropRef}
+        >
           {main.length !== 0 ? (
             main.map((mainItem) => (
               <BetweenBunParent
@@ -66,7 +70,9 @@ export const DesktopBurgerConstructor = ({
       </ul>
       <div className={`${styles.price_total} pl-8 pr-4`}>
         <div className={styles.price_total_number}>
-          <p className="text_type_digits-medium">{total}</p>
+          <p className="text_type_digits-medium" data-testid="total-price">
+            {total}
+          </p>
           <CurrencyIcon type="primary" />
         </div>
         <Button

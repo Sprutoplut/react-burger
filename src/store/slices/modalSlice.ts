@@ -7,7 +7,7 @@ type ModalState = {
   title: string;
 };
 
-const initialState: ModalState = {
+export const initialState: ModalState = {
   isOpen: false,
   type: null,
   orderNum: null,

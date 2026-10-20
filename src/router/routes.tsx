@@ -1,20 +1,52 @@
 import { AuthLayout } from '@/components/layouts/login-layout/auth-layout';
 import { ProfileLayout } from '@/components/layouts/profile-layout/profile-layout';
 import { RootLayout } from '@/components/layouts/root-layout/root-layout';
+import { Loader } from '@/components/loader/loader';
 import { OrderDetail } from '@/components/order-detail/order-detail';
-import { Feed } from '@/pages/feed';
-import { ForgotPasswordPage } from '@/pages/forgot-password';
-import { Home } from '@/pages/home';
-import { IngredientPage } from '@/pages/ingredient';
-import { LoginPage } from '@/pages/login';
-import { NotFound } from '@/pages/NotFound';
-import { Orders } from '@/pages/profile/orders';
-import ProfilePage from '@/pages/profile/profile';
-import { RegisterPage } from '@/pages/register';
-import { ResetPasswordPage } from '@/pages/reset-password';
+import { lazy, Suspense } from 'react';
 import { useRoutes, type RouteObject } from 'react-router-dom';
 
 import { ProtectRoute } from './protected';
+
+const Home = lazy(() =>
+  import('@/pages/home').then((module) => ({ default: module.Home }))
+);
+const Feed = lazy(() =>
+  import('@/pages/feed').then((module) => ({ default: module.Feed }))
+);
+const LoginPage = lazy(() =>
+  import('@/pages/login').then((module) => ({ default: module.LoginPage }))
+);
+const RegisterPage = lazy(() =>
+  import('@/pages/register').then((module) => ({ default: module.RegisterPage }))
+);
+const ForgotPasswordPage = lazy(() =>
+  import('@/pages/forgot-password').then((module) => ({
+    default: module.ForgotPasswordPage,
+  }))
+);
+const ResetPasswordPage = lazy(() =>
+  import('@/pages/reset-password').then((module) => ({
+    default: module.ResetPasswordPage,
+  }))
+);
+const ProfilePage = lazy(() =>
+  import('@/pages/profile/profile').then((module) => ({ default: module.ProfilePage }))
+);
+const Orders = lazy(() =>
+  import('@/pages/profile/orders').then((module) => ({ default: module.Orders }))
+);
+const IngredientPage = lazy(() =>
+  import('@/pages/ingredient').then((module) => ({ default: module.IngredientPage }))
+);
+const NotFound = lazy(() =>
+  import('@/pages/NotFound').then((module) => ({ default: module.NotFound }))
+);
+
+// Обертка для ленивых компонентов с Suspense
+const LazyWrapper = ({ children }: { children: React.ReactNode }): React.ReactNode => (
+  <Suspense fallback={<Loader />}>{children}</Suspense>
+);
 
 export const routes: RouteObject[] = [
   {
@@ -23,15 +55,23 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <Home />,
+        element: (
+          <LazyWrapper>
+            <Home />
+          </LazyWrapper>
+        ),
       },
       {
         path: 'feed',
-        element: <Feed />,
+        element: (
+          <LazyWrapper>
+            <Feed />
+          </LazyWrapper>
+        ),
       },
       {
         path: 'feed/:id',
-        element: <OrderDetail />,
+        element: <OrderDetail />, // OrderDetail можно тоже сделать ленивым, если нужно
       },
       {
         path: 'login',
@@ -39,7 +79,9 @@ export const routes: RouteObject[] = [
           <ProtectRoute>
             <AuthLayout type="login">
               {({ formData, onChange }) => (
-                <LoginPage formData={formData} onChange={onChange} />
+                <LazyWrapper>
+                  <LoginPage formData={formData} onChange={onChange} />
+                </LazyWrapper>
               )}
             </AuthLayout>
           </ProtectRoute>
@@ -51,7 +93,9 @@ export const routes: RouteObject[] = [
           <ProtectRoute>
             <AuthLayout type="register">
               {({ formData, onChange }) => (
-                <RegisterPage formData={formData} onChange={onChange} />
+                <LazyWrapper>
+                  <RegisterPage formData={formData} onChange={onChange} />
+                </LazyWrapper>
               )}
             </AuthLayout>
           </ProtectRoute>
@@ -63,7 +107,9 @@ export const routes: RouteObject[] = [
           <ProtectRoute>
             <AuthLayout type="forgot-password">
               {({ formData, onChange }) => (
-                <ForgotPasswordPage formData={formData} onChange={onChange} />
+                <LazyWrapper>
+                  <ForgotPasswordPage formData={formData} onChange={onChange} />
+                </LazyWrapper>
               )}
             </AuthLayout>
           </ProtectRoute>
@@ -75,7 +121,9 @@ export const routes: RouteObject[] = [
           <ProtectRoute>
             <AuthLayout type="reset-password">
               {({ formData, onChange }) => (
-                <ResetPasswordPage formData={formData} onChange={onChange} />
+                <LazyWrapper>
+                  <ResetPasswordPage formData={formData} onChange={onChange} />
+                </LazyWrapper>
               )}
             </AuthLayout>
           </ProtectRoute>
@@ -91,11 +139,19 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <ProfilePage />,
+            element: (
+              <LazyWrapper>
+                <ProfilePage />
+              </LazyWrapper>
+            ),
           },
           {
             path: 'orders',
-            element: <Orders />,
+            element: (
+              <LazyWrapper>
+                <Orders />
+              </LazyWrapper>
+            ),
           },
           {
             path: 'orders/:id',
@@ -103,14 +159,21 @@ export const routes: RouteObject[] = [
           },
         ],
       },
-
       {
         path: 'ingredients/:id',
-        element: <IngredientPage />,
+        element: (
+          <LazyWrapper>
+            <IngredientPage />
+          </LazyWrapper>
+        ),
       },
       {
         path: '*',
-        element: <NotFound />,
+        element: (
+          <LazyWrapper>
+            <NotFound />
+          </LazyWrapper>
+        ),
       },
     ],
   },

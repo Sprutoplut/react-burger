@@ -36,4 +36,7 @@
 		'@utils': path.resolve(__dirname, './src/utils'),
 	},
 ```
-TS уже был
+
+домен мне так и не дали, разместил на сервере и на github page
+https://sprutoplut.github.io/react-burger/
+http://111.88.240.211/

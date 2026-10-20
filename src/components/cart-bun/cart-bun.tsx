@@ -30,7 +30,11 @@ export const CartBun = ({ ingredient, direction }: TCartBun): React.JSX.Element 
   });
   dropBun(dragRef);
   return (
-    <li className={`${styles.header_cart_list} pl-8`} ref={dragRef}>
+    <li
+      className={`${styles.header_cart_list} pl-8`}
+      ref={dragRef}
+      data-testid="constructor-drop-zone-bun"
+    >
       <ConstructorElement
         isLocked
         price={ingredient !== null ? ingredient.price : 0}
